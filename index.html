@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_0.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d10'/%3E%3Cpath d='M16 5l9 11-9 11-9-11z' fill='none' stroke='%23c8aa6e' stroke-width='2'/%3E%3C/svg%3E">
-<script>document.documentElement.classList.add('js');</script>
+<script>document.documentElement.classList.add('js');if(/^#eren(-|$)/.test(location.hash))document.documentElement.setAttribute('data-page-active','eren');</script>
 <style>
 :root{
   color-scheme:dark;
@@ -29,6 +29,7 @@
   --gold:#c8aa6e;
   --gold-hi:#e8d6a6;
   --red:#f0283f;
+  --red-hot:#ff2e45;
   --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,"Helvetica Neue","Hiragino Sans","Yu Gothic","Noto Sans JP",Arial,sans-serif;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","Hoefler Text",Georgia,"Times New Roman",serif;
   --gutter:clamp(20px,5vw,56px);
@@ -91,6 +92,54 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 .btn--gold:hover{border-color:transparent;background:linear-gradient(180deg,#f0dfb0,#d3b678);box-shadow:0 14px 40px -12px rgba(200,170,110,.75)}
 .btn.is-copied{background:linear-gradient(180deg,#7fe3ee,#3fbccb);color:#04262b;box-shadow:0 12px 36px -12px rgba(95,214,228,.6)}
 
+/* Signature button — hextech "Find match" style: teal frame, aurora light-waves, glowing hover */
+.lolbtn{--ct:15px;--cb:11px;position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 clamp(34px,5vw,54px);color:#f6fdff;font-family:var(--serif);font-size:15px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 2px rgba(0,25,30,.85),0 0 14px rgba(110,240,235,.4);cursor:pointer;-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 0 8px rgba(43,214,206,.5)) drop-shadow(0 0 20px rgba(33,150,200,.3));animation:lolGlow 4.2s ease-in-out infinite;transition:transform .3s var(--ease),filter .45s var(--ease);will-change:transform,filter}
+.lolbtn:hover{transform:translateY(-2px) scale(1.01);animation:lolGlowHot 1.5s ease-in-out infinite}
+.lolbtn:active{transform:translateY(0) scale(.995);transition-duration:.12s}
+.lolbtn:focus-visible{outline-offset:5px;border-radius:12px}
+.lolbtn__l{position:absolute;z-index:-1;clip-path:polygon(var(--ct) 0,calc(100% - var(--ct)) 0,100% var(--ct),100% calc(100% - var(--cb)),calc(100% - var(--cb)) 100%,var(--cb) 100%,0 calc(100% - var(--cb)),0 var(--ct));transition:filter .4s var(--ease)}
+.lolbtn__l--edge{inset:0;background:linear-gradient(180deg,#b9fff6 0%,#48d9d4 42%,#2096a6 100%)}
+.lolbtn__l--gap{inset:2px;--ct:14px;--cb:10px;background:#04252b}
+.lolbtn__l--line{inset:4px;--ct:13px;--cb:9px;background:linear-gradient(180deg,#3cc7c6,#1a7f8d)}
+.lolbtn__l--core{inset:5px;--ct:12px;--cb:8px;overflow:hidden;background:linear-gradient(180deg,#062f36 0%,#08454c 55%,#0a5a60 100%)}
+.lolbtn__sheen{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(160,255,245,.17),transparent 40%),radial-gradient(60% 95% at 0% 100%,rgba(70,232,222,.36),transparent 70%),radial-gradient(60% 95% at 100% 100%,rgba(70,232,222,.36),transparent 70%)}
+/* Aurora waves: wide oblique light sheets sweeping the core (color-dodge) */
+.lolbtn__w{position:absolute;inset:-50% -50%;background-repeat:repeat-x;mix-blend-mode:color-dodge;pointer-events:none;transition:opacity .45s var(--ease)}
+.lolbtn__w--a{opacity:.4;background-image:linear-gradient(115deg,transparent 20%,rgba(120,255,245,.4) 40%,rgba(255,255,255,.7) 50%,rgba(120,255,245,.4) 60%,transparent 80%);background-size:140% 100%;background-position:175% 0;animation:lolWaveAurora 4.5s linear infinite}
+.lolbtn__w--b{opacity:.3;background-image:linear-gradient(115deg,transparent 15%,rgba(60,210,230,.3) 35%,rgba(200,255,250,.5) 50%,rgba(60,210,230,.3) 65%,transparent 85%);background-size:180% 100%;background-position:225% 0;animation:lolWaveAuroraB 6.5s linear infinite reverse}
+.lolbtn__l--core::before{content:"";position:absolute;inset:-50% -50%;background-repeat:repeat-x;mix-blend-mode:color-dodge;pointer-events:none;opacity:.22;background-image:linear-gradient(115deg,transparent 25%,rgba(90,200,235,.35) 40%,rgba(170,250,255,.55) 50%,rgba(90,200,235,.35) 60%,transparent 75%);background-size:200% 100%;background-position:200% 0;animation:lolWaveAuroraC 8.5s linear infinite;transition:opacity .45s var(--ease)}
+.lolbtn__diag{position:absolute;inset:-70% -50%;pointer-events:none;background:linear-gradient(128deg,transparent 30%,rgba(190,255,250,0) 42%,rgba(220,255,252,.8) 50%,rgba(190,255,250,0) 58%,transparent 70%);background-size:260% 260%;background-position:-40% 140%;opacity:.6;animation:lolDiagSweep 3.2s linear infinite;transition:opacity .4s var(--ease),filter .4s var(--ease)}
+.lolbtn:hover .lolbtn__l--edge{filter:brightness(1.5)}
+.lolbtn:hover .lolbtn__l--line{filter:brightness(1.5)}
+.lolbtn:hover .lolbtn__l--core{filter:brightness(1.6) saturate(1.2)}
+.lolbtn:hover .lolbtn__w--a{opacity:.9;animation-duration:1.8s}
+.lolbtn:hover .lolbtn__w--b{opacity:.7;animation-duration:2.6s}
+.lolbtn:hover .lolbtn__l--core::before{opacity:.55;animation-duration:3.4s}
+.lolbtn:hover .lolbtn__diag{opacity:1;animation-duration:1s;filter:brightness(1.5)}
+.lolbtn__t{transition:text-shadow .4s var(--ease)}
+.lolbtn:hover .lolbtn__t{text-shadow:0 1px 2px rgba(0,25,30,.9),0 0 10px rgba(160,255,248,.85),0 0 26px rgba(95,234,224,.55)}
+/* Seamless loops: background-position travel = whole number of tiles (a:1 · b:2 · c:2) */
+@keyframes lolWaveAurora{0%{background-position:175% 0}100%{background-position:-175% 0}}
+@keyframes lolWaveAuroraB{0%{background-position:225% 0}100%{background-position:-225% 0}}
+@keyframes lolWaveAuroraC{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes lolDiagSweep{0%{background-position:-40% 140%}100%{background-position:140% -40%}}
+@keyframes lolGlow{
+  0%,100%{filter:drop-shadow(0 0 8px rgba(43,214,206,.5)) drop-shadow(0 0 20px rgba(33,150,200,.3))}
+  50%{filter:drop-shadow(0 0 12px rgba(63,234,224,.8)) drop-shadow(0 0 32px rgba(40,170,215,.5))}
+}
+@keyframes lolGlowHot{
+  0%,100%{filter:drop-shadow(0 0 12px rgba(63,234,224,.9)) drop-shadow(0 0 35px rgba(40,170,215,.8))}
+  50%{filter:drop-shadow(0 0 18px rgba(130,255,248,1)) drop-shadow(0 0 50px rgba(90,210,245,.95))}
+}
+/* Reduced motion: gentle drift kept for this button only (overrides the global freeze) */
+@media (prefers-reduced-motion:reduce){
+  .lolbtn,.lolbtn:hover{animation:none!important}
+  .lolbtn__diag,.lolbtn__l--core::before{animation:none!important}
+  .lolbtn__diag{opacity:.35}
+  .lolbtn__w--a{animation-duration:9s!important}
+  .lolbtn__w--b{animation-duration:13s!important}
+}
+
 /* ---------- Hero ---------- */
 .hero{position:relative;isolation:isolate;display:flex;align-items:center;min-height:100vh;min-height:100svh;padding:calc(var(--nav-h) + 56px) 0 clamp(72px,9vw,112px);overflow:hidden}
 .hero__art{position:absolute;inset:0;z-index:-1;pointer-events:none}
@@ -127,6 +176,13 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 .section::before{content:"";position:absolute;top:0;left:var(--gutter);right:var(--gutter);height:1px;background:linear-gradient(90deg,transparent,var(--line-2) 20%,var(--line-2) 80%,transparent)}
 .section--tight{padding-top:0}
 .section--tight::before{display:none}
+/* Full-bleed artwork behind a section (Why Yone?, Playstyle) */
+.section--art{isolation:isolate;overflow:hidden}
+.section--art .section__bg{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.section--art .section__bg::before{content:"";position:absolute;inset:0;background-size:cover;background-position:center 30%;opacity:.6;filter:saturate(.9) contrast(1.02)}
+.section--art .section__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,13,16,.84) 0%,rgba(11,13,16,.3) 48%,rgba(11,13,16,.12) 100%),linear-gradient(180deg,var(--bg) 0%,rgba(11,13,16,0) 16%,rgba(11,13,16,0) 80%,var(--bg) 100%)}
+.section--art .section__bg--yone::before{background-image:url("https://i.imgur.com/PojFR4q.jpeg")}
+.section--art .section__bg--style::before{background-image:url("https://images3.alphacoders.com/128/1281892.jpg")}
 .head{max-width:780px}
 .h2{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5vw,60px);line-height:1.06;letter-spacing:-.015em;text-wrap:balance}
 .lede{max-width:60ch;margin-top:22px;font-size:clamp(17px,1.5vw,19.5px);line-height:1.65;color:var(--dim);text-wrap:pretty}
@@ -136,15 +192,16 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 .js .reveal{opacity:0}
 .js .reveal.is-visible{opacity:1;animation:rise .85s var(--ease) backwards;animation-delay:calc(var(--i,0) * 90ms)}
 
-/* ---------- Why Yone ---------- */
-.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(28px,3.5vw,48px);margin-top:clamp(48px,6vw,80px)}
-.pillar{position:relative;padding-top:26px;border-top:1px solid var(--line-2)}
-.pillar::before{content:"";position:absolute;top:-1px;left:0;width:36px;height:1px;background:var(--gold)}
-.pillar .icon{margin-bottom:22px;color:var(--cyan)}
-.pillar h3{font-family:var(--serif);font-size:26px;font-weight:500}
-.pillar p{margin-top:12px;font-size:15.5px;line-height:1.65;color:var(--dim)}
-@media (max-width:1099px){.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:559px){.pillars{grid-template-columns:minmax(0,1fr);gap:34px}}
+/* ---------- Why Yone — reason cards ---------- */
+.reasons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px);margin-top:clamp(44px,6vw,72px)}
+.reason{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;min-height:320px;padding:clamp(20px,2.6vw,30px);border:1px solid var(--line-2);border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#141a21,#0d1116);transition:border-color .5s var(--ease),transform .5s var(--ease)}
+.reason__art{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:saturate(.9) brightness(.9);transition:transform .6s var(--ease),filter .4s var(--ease)}
+.reason::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,13,16,.3) 0%,rgba(11,13,16,.45) 50%,rgba(11,13,16,.92) 100%)}
+.reason:hover{border-color:rgba(200,170,110,.5);transform:translateY(-3px)}
+.reason:hover .reason__art{transform:scale(1.05);filter:saturate(1.05) brightness(1)}
+.reason h3{font-family:var(--serif);font-size:clamp(22px,2.3vw,27px);font-weight:500;line-height:1.2;text-shadow:0 2px 18px rgba(0,0,0,.75)}
+.reason p{font-size:15px;line-height:1.6;color:var(--text);text-shadow:0 1px 12px rgba(0,0,0,.85)}
+@media (max-width:899px){.reasons{grid-template-columns:minmax(0,1fr)}}
 
 /* ---------- Stats ---------- */
 .snaps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.2vw,26px);align-items:start;margin-top:clamp(44px,6vw,72px)}
@@ -213,16 +270,27 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 .build__text{margin-top:10px;max-width:52ch;font-size:15.5px;line-height:1.65;color:var(--dim)}
 
 /* ---------- Jungler note ---------- */
-.jungle{padding:clamp(24px,5vw,64px);border:1px solid rgba(95,214,228,.22);border-radius:32px;background:radial-gradient(80% 100% at 0% 0%,rgba(95,214,228,.09),transparent 60%),#0f1318}
-.jungle__title{font-family:var(--serif);font-size:clamp(30px,4vw,48px);font-weight:500;line-height:1.1;letter-spacing:-.01em}
-.jungle__quote{max-width:52ch;margin-top:clamp(20px,3vw,32px);font-family:var(--serif);font-size:clamp(20px,2.3vw,28px);line-height:1.45;color:var(--text);text-wrap:pretty}
-.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:clamp(32px,4vw,52px);border:1px solid var(--line);border-radius:20px;background:var(--line);overflow:hidden}
-.trio__item{min-width:0;padding:clamp(22px,2.6vw,30px);background:#0d1115}
-.trio__item .icon{margin-bottom:20px;color:var(--gold)}
-.trio__item:nth-child(2) .icon{color:var(--cyan)}
-.trio__item h3{font-family:var(--serif);font-size:23px;font-weight:500}
-.trio__item p{margin-top:10px;font-size:15px;line-height:1.65;color:var(--dim)}
-@media (max-width:899px){.trio{grid-template-columns:minmax(0,1fr)}}
+.jungle{position:relative;isolation:isolate;overflow:hidden;padding:clamp(24px,5vw,64px);border:1px solid rgba(95,214,228,.22);border-radius:32px;background:radial-gradient(80% 100% at 0% 0%,rgba(95,214,228,.09),transparent 60%),#0f1318}
+.jungle__art{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.jungle__art::before{content:"";position:absolute;inset:0;background-image:var(--art);background-size:cover;background-position:60% 28%;opacity:0;filter:saturate(.9) brightness(.82);transition:opacity 1.6s var(--ease)}
+.jungle__art.has-art::before{opacity:.62}
+.jungle__art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,17,21,.93) 0%,rgba(13,17,21,.68) 48%,rgba(13,17,21,.28) 100%),linear-gradient(180deg,rgba(13,17,21,.3) 0%,rgba(13,17,21,.55) 100%)}
+@media (max-width:767px){.jungle__art::after{background:linear-gradient(180deg,rgba(13,17,21,.72),rgba(13,17,21,.88))}}
+.jungle__title{font-family:var(--serif);font-size:clamp(30px,4vw,48px);font-weight:500;line-height:1.1;letter-spacing:-.01em;text-shadow:0 2px 20px rgba(0,0,0,.55)}
+.jungle__quote{max-width:34ch;margin-top:clamp(20px,3vw,32px);font-family:var(--serif);font-size:clamp(22px,2.7vw,34px);line-height:1.4;color:var(--text);text-shadow:0 2px 20px rgba(0,0,0,.65);text-wrap:pretty}
+.vb{color:var(--red-hot);font-weight:700;white-space:nowrap;text-shadow:0 0 18px rgba(255,46,69,.5)}
+.vb__icon{position:relative;display:inline-block;width:1.05em;height:1.05em;margin-right:.3em;vertical-align:-.16em;border:2px solid var(--red-hot);border-radius:50%;overflow:hidden;background:#2a0a10;color:var(--red-hot);box-shadow:0 0 14px -2px rgba(255,46,69,.75)}
+.vb__icon img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 30%}
+.vb__icon svg{position:absolute;inset:0;width:60%;height:60%;margin:auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);margin-top:clamp(28px,4vw,48px)}
+.duo__card{min-width:0;padding:clamp(20px,2.6vw,30px);border:1px solid var(--line-2);border-radius:20px;background:rgba(13,17,21,.68);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.duo__card .icon{margin-bottom:16px;color:var(--gold)}
+.duo__card:nth-child(2) .icon{color:var(--cyan)}
+.duo__card h3{font-family:var(--serif);font-size:23px;font-weight:500}
+.duo__card ul{display:grid;gap:10px;margin-top:14px}
+.duo__card li{position:relative;padding-left:20px;font-size:clamp(16px,1.5vw,18px);line-height:1.5;color:var(--text)}
+.duo__card li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--cyan);transform:rotate(45deg)}
+@media (max-width:767px){.duo{grid-template-columns:minmax(0,1fr)}}
 
 /* ---------- Profiles ---------- */
 .profiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px);margin-top:clamp(44px,6vw,72px)}
@@ -268,6 +336,56 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 .footer__top{font-size:14px;color:var(--dim);transition:color .3s var(--ease)}
 .footer__top:hover{color:var(--gold-hi)}
 
+/* ---------- Categories (top bar) & pages ---------- */
+.nav__left{display:flex;align-items:center;gap:clamp(22px,3vw,36px);min-width:0}
+.nav__left .brand{position:relative;padding:8px 0;opacity:.55;transition:opacity .3s var(--ease)}
+.nav__left .brand::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.nav__left .brand:hover{opacity:1}
+html:not([data-page-active="eren"]) .brand[data-cat="yone"],html[data-page-active="eren"] .brand[data-cat="eren"]{opacity:1}
+html:not([data-page-active="eren"]) .brand[data-cat="yone"]::after,html[data-page-active="eren"] .brand[data-cat="eren"]::after{transform:scaleX(1)}
+html[data-page-active="eren"] .nav__links{display:none}
+[data-page="eren"]{display:none}
+html[data-page-active="eren"] [data-page="eren"]{display:block}
+html[data-page-active="eren"] [data-page="yone"]{display:none}
+@media (max-width:400px){.nav__left{gap:20px}}
+
+/* ---------- Eren page ---------- */
+.eren-bg{--edim:.1;position:fixed;inset:0;z-index:-1;pointer-events:none}
+.eren-bg::before{content:"";position:absolute;inset:0;background-image:var(--art);background-size:cover;background-position:60% 35%;opacity:0;transition:opacity 1.6s var(--ease)}
+.eren-bg.has-art::before{opacity:1}
+.eren-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,13,16,.5) 0%,rgba(11,13,16,.1) 55%,rgba(11,13,16,.3) 100%),linear-gradient(180deg,rgba(11,13,16,.4) 0%,rgba(11,13,16,0) 30%,rgba(11,13,16,.4) 100%),rgba(11,13,16,var(--edim))}
+.hero--eren .hero__name{filter:drop-shadow(0 6px 32px rgba(0,0,0,.55))}
+.hero--eren .hero__id{text-shadow:0 1px 14px rgba(0,0,0,.85)}
+.hero--eren .hero__quote{max-width:26ch;text-shadow:0 2px 26px rgba(0,0,0,.75)}
+.glaze{position:relative;padding:clamp(32px,6vw,72px) 0 clamp(96px,12vw,160px)}
+.glaze__panel{display:grid;gap:clamp(20px,2.6vw,28px);width:min(100% - 2 * var(--gutter),780px);margin-inline:auto;padding:clamp(24px,4.5vw,56px);border:1px solid var(--line-2);border-radius:28px;background:rgba(11,13,16,.34);box-shadow:0 40px 120px -50px rgba(0,0,0,.9)}
+.glaze__panel p{font-size:clamp(17px,1.6vw,19.5px);line-height:1.78;color:rgba(239,234,224,.96);text-shadow:0 1px 14px rgba(0,0,0,.7);text-wrap:pretty}
+.glaze__panel em.hl{font-family:var(--serif);font-style:normal;font-size:1.06em;color:var(--gold-hi)}
+.verdict{display:grid;gap:12px;padding-left:clamp(18px,2.6vw,28px);border-left:1px solid var(--gold)}
+.glaze__panel .verdict p{font-family:var(--serif);font-size:clamp(21px,2.5vw,28px);line-height:1.4;color:var(--text)}
+.glaze__panel .goat{margin-top:8px;font-family:var(--serif);font-size:clamp(26px,3.6vw,42px);font-weight:500;line-height:1.2;letter-spacing:.005em;color:var(--gold-hi);text-shadow:0 0 30px rgba(200,170,110,.25)}
+
+/* White birds crossing the Eren page as you scroll */
+.birds{position:fixed;inset:0;z-index:-1;display:none;overflow:hidden;pointer-events:none}
+html[data-page-active="eren"] .birds{display:block}
+.bird{position:absolute;left:0;top:0;will-change:transform}
+.bird__flip{transition:transform .5s var(--ease)}
+.bird.is-back .bird__flip{transform:scaleX(-1)}
+.bird__svg{display:block;width:100%;height:auto;overflow:visible;fill:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(255,255,255,.4));animation:birdBob var(--bob,4.4s) ease-in-out infinite}
+.bird__wing{transform-origin:37px 29.5px;animation:birdFlap var(--flap,.9s) ease-in-out infinite}
+.bird__wing--far{opacity:.55;animation-delay:calc(var(--flap,.9s) * -.14)}
+.bird__cage{position:absolute;left:50%;top:50%;width:175%;height:auto;overflow:visible;fill:none;stroke:#e8d6a6;stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:translate(-50%,-58%) scale(.92);transition:opacity .5s var(--ease),transform .7s var(--ease);pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 4px rgba(200,170,110,.45))}
+.bird__cage *{vector-effect:non-scaling-stroke}
+.birds.is-idle .bird__cage{opacity:.95;transform:translate(-50%,-46%) scale(1)}
+.birds.is-idle .bird__wing,.birds.is-idle .bird__svg{animation-play-state:paused!important}
+@keyframes birdFlap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-.85)}}
+@keyframes birdBob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){
+  .bird__svg{animation:birdBob var(--bob,4.4s) ease-in-out infinite!important}
+  .bird__wing{animation:birdFlap var(--flap,.9s) ease-in-out infinite!important}
+  .bird__wing--far{animation-delay:calc(var(--flap,.9s) * -.14)!important}
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -282,13 +400,18 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 
 <header class="nav" data-nav>
   <div class="nav__inner">
-    <a class="brand" href="#top" aria-label="AYOUB / YONE — back to top">
-      <span class="brand__mark" aria-hidden="true"></span>
-      <span>AYOUB</span><span class="brand__sep" aria-hidden="true">/</span><span class="brand__champ">YONE</span>
-    </a>
+    <div class="nav__left">
+      <a class="brand" href="#top" data-cat="yone" aria-label="YONE — back to top">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__champ">YONE</span>
+      </a>
+      <a class="brand" href="#eren" data-cat="eren" aria-label="EREN">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__champ">EREN</span>
+      </a>
+    </div>
     <nav class="nav__links" aria-label="Main navigation">
       <a href="#yone" data-spy="yone">Why Yone</a>
-      <a href="#stats" data-spy="stats">Stats</a>
       <a href="#style" data-spy="style">Playstyle</a>
       <a href="#profils" data-spy="profils">Profiles</a>
     </nav>
@@ -299,13 +422,14 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 <div class="mobile-menu" id="mobile-menu" data-menu>
   <nav aria-label="Mobile navigation">
     <a href="#yone" style="--i:0">Why Yone</a>
-    <a href="#stats" style="--i:1">Stats</a>
-    <a href="#style" style="--i:2">Playstyle</a>
-    <a href="#profils" style="--i:3">Profiles</a>
+    <a href="#style" style="--i:1">Playstyle</a>
+    <a href="#profils" style="--i:2">Profiles</a>
+    <a href="#eren" style="--i:3">Eren</a>
   </nav>
 </div>
 
 <main id="main">
+<div data-page="yone">
 
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero__art" aria-hidden="true" data-art>
@@ -321,56 +445,47 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
       <p class="hero__quote">“my yone is not the average yone even <span class="faker">faker</span> is impressed”</p>
       <p class="hero__sub">The best yone player you'll see in your life</p>
       <div class="hero__cta">
-        <a class="btn btn--gold" href="#stats">View stats</a>
-        <a class="btn" href="#jungle">Note for the jungler</a>
+        <a class="lolbtn" href="#jungle">
+          <span class="lolbtn__l lolbtn__l--edge" aria-hidden="true"></span>
+          <span class="lolbtn__l lolbtn__l--gap" aria-hidden="true"></span>
+          <span class="lolbtn__l lolbtn__l--line" aria-hidden="true"></span>
+          <span class="lolbtn__l lolbtn__l--core" aria-hidden="true"><i class="lolbtn__sheen"></i><i class="lolbtn__diag"></i><i class="lolbtn__w lolbtn__w--a"></i><i class="lolbtn__w lolbtn__w--b"></i></span>
+          <span class="lolbtn__t">Note for the jungler</span>
+        </a>
       </div>
       <dl class="hero__facts" data-slot="hero-facts"></dl>
     </div>
   </section>
 
-  <section class="section" id="yone" aria-labelledby="yone-title">
+  <section class="section section--art" id="yone" aria-labelledby="yone-title">
+    <div class="section__bg section__bg--yone" aria-hidden="true"></div>
     <div class="wrap">
       <div class="head reveal">
         <h2 class="h2" id="yone-title">Why Yone?</h2>
         <p class="lede">Yone is a fighter/assassin with high mobility. He deals both physical and magic damage, has excellent scaling potential, and his kit lets him play side lanes before making a major impact in teamfights.</p>
       </div>
-      <div class="pillars" data-stagger>
-        <article class="pillar reveal">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
-          <h3>Pressure</h3>
-          <p>Side lanes are his playground: he pushes waves, forces enemy responses and opens up space for the team.</p>
+      <div class="reasons" data-stagger>
+        <article class="reason reveal">
+          <img class="reason__art" src="https://i.pinimg.com/736x/76/19/f8/7619f8bd362c712ce50df622d46a11af.jpg" alt="" loading="lazy" decoding="async" onerror="this.remove()">
+          <h3>The GOAT of League of Legends</h3>
+          <p>Not a hot take — just the obvious truth.</p>
         </article>
-        <article class="pillar reveal">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12h14"/><path d="M12 6l6 6-6 6"/><path d="M3 7h6M3 17h6"/></svg>
-          <h3>Mobility</h3>
-          <p>Dashes, repositioning and ranged engages: he picks his fights, breaks away and repositions where his impact is strongest.</p>
+        <article class="reason reveal">
+          <img class="reason__art" src="https://i.pinimg.com/736x/66/24/34/662434cf87cf88dcf4e86383fe7ac186.jpg" alt="" loading="lazy" decoding="async" onerror="this.remove()">
+          <h3>The best 1v9 champion</h3>
+          <p>Built to carry the dogs on my team and win the unwinnable.</p>
         </article>
-        <article class="pillar reveal">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 18l6-6 4 4 8-9"/><path d="M15 7h6v6"/></svg>
-          <h3>Scaling</h3>
-          <p>His damage ramps up with items: real potential in mid and late game, provided he gets there in good conditions.</p>
-        </article>
-        <article class="pillar reveal">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14.2c2.6.2 4.5 2.2 4.5 4.8"/></svg>
-          <h3>Teamfight</h3>
-          <p>A well-timed flank, a clean engage and burst damage: when the timing is right, he can change the outcome of a fight.</p>
+        <article class="reason reveal">
+          <img class="reason__art" src="https://i.pinimg.com/736x/c9/3d/0d/c93d0dae10fc24ff7fa102cd463ea830.jpg" alt="" loading="lazy" decoding="async" onerror="this.remove()">
+          <h3>He looks like Yoriichi from Demon Slayer</h3>
+          <p>Same calm, same blade — the resemblance is unreal.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="section" id="stats" aria-labelledby="stats-title">
-    <div class="wrap">
-      <div class="head reveal">
-        <h2 class="h2" id="stats-title">Stats</h2>
-        <p class="lede">Two profile snapshots, presented separately. Nothing is mixed or extrapolated.</p>
-      </div>
-      <div class="snaps" data-slot="snapshots" data-stagger></div>
-      <p class="note reveal" data-slot="disclaimer"></p>
-    </div>
-  </section>
-
-  <section class="section" id="style" aria-labelledby="style-title">
+  <section class="section section--art" id="style" aria-labelledby="style-title">
+    <div class="section__bg section__bg--style" aria-hidden="true"></div>
     <div class="wrap">
       <div class="head reveal">
         <h2 class="h2" id="style-title">Playstyle</h2>
@@ -410,25 +525,27 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
   <section class="section section--tight" id="jungle" aria-labelledby="jungle-title">
     <div class="wrap">
       <div class="jungle reveal">
+        <div class="jungle__art" aria-hidden="true" data-art-jungle></div>
         <h2 class="jungle__title" id="jungle-title">Note for the jungler</h2>
         <blockquote class="jungle__quote">
-          <p>“No need to force TOP ganks to get me playing. I can handle my lane and play for my scaling. However, counter-ganks and cover when the enemy jungler plays around TOP are particularly useful.”</p>
+          <p>“Don't gank me if you don't feel it. But don't int: I handle my lane, even alone — except against <span class="vb"><span class="vb__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8 4l-3 16M13 4l-3 16M18 4l-3 16"/></svg><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Volibear_0.jpg" alt="" width="64" height="64" loading="lazy" decoding="async" onerror="this.remove()"></span>Volibear</span>.”</p>
         </blockquote>
-        <div class="trio">
-          <article class="trio__item">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><path d="M6.5 6.5l11 11"/></svg>
-            <h3>No forced gank</h3>
-            <p>My lane can live without a visit: I farm, secure my waves and play for my scaling. Your time is better spent elsewhere.</p>
+        <div class="duo">
+          <article class="duo__card">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 9c3-4 6-4 9 0s6 4 9 0"/><path d="M3 15c3-4 6-4 9 0s6 4 9 0"/></svg>
+            <h3>How I play</h3>
+            <ul>
+              <li>I freeze the wave a lot.</li>
+              <li>I invade and proxy as soon as I have Yun Tal.</li>
+            </ul>
           </article>
-          <article class="trio__item">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
-            <h3>Counter-gank = useful</h3>
-            <p>When the enemy jungler shows up around TOP, a ping, cover or a counter-gank really changes the course of the game.</p>
-          </article>
-          <article class="trio__item">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>
-            <h3>Timing first</h3>
-            <p>Good timing beats a forced gank: objectives, resets and teamfight windows come before a visit with no advantage.</p>
+          <article class="duo__card">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+            <h3>When I invade</h3>
+            <ul>
+              <li>I know what I'm doing.</li>
+              <li>If I pull the aggro of their jungler and their top, that's the moment: invade or go for the objective.</li>
+            </ul>
           </article>
         </div>
       </div>
@@ -472,14 +589,57 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
     </div>
   </section>
 
+</div>
+
+<div data-page="eren" id="eren">
+  <div class="eren-bg" aria-hidden="true" data-eren-art></div>
+
+  <section class="hero hero--eren" id="eren-top" aria-labelledby="eren-title">
+    <div class="hero__inner">
+      <h1 class="hero__name" id="eren-title">EREN</h1>
+      <p class="hero__id"><span>YEAGER</span><i aria-hidden="true"></i><span>ATTACK ON TITAN</span></p>
+      <p class="hero__quote">Eren Yeager is the best-written character in anime.</p>
+      <div class="hero__cta">
+        <a class="btn btn--gold" href="#eren-glaze">Read why</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="glaze" id="eren-glaze" aria-label="Why Eren Yeager is the best-written character in anime">
+    <div class="glaze__panel">
+      <p class="reveal">Eren begins with a single wish: to be free. What makes him remarkable is how far the story follows that idea. The boy who screams about destroying his enemies gradually learns that the world is far more complicated than he thought, and the story never lets him, or the viewer, off easily.</p>
+      <p class="reveal">What defines him is determination. However many times he is beaten, betrayed or broken, he keeps moving forward: <em class="hl">“If I don’t keep moving forward, nothing will change.”</em></p>
+      <p class="reveal">Freedom is what separates him from other protagonists. He doesn’t want strength or power for their own sake, and that one idea drives every choice he makes, including the ones that are hard to forgive.</p>
+      <p class="reveal">The writing rewards a second viewing. The angry kid of the first season and the cold, distant Eren of the later ones are the same person, and many early scenes change meaning once you know where he ends up.</p>
+      <p class="reveal">He is also far more calculating than he first appears: he adapts, learns from his enemies and acts on the information he has. Yet Mikasa and Armin never stop mattering to him, and that is what makes him tragic. He is not simply good or evil, only a person making increasingly extreme choices in a brutal world.</p>
+      <p class="reveal">Eren can see the future he is heading toward, and he walks into it anyway, knowing what it will cost. You can reject his actions and still understand how he got there, which is why the debate around him never ends.</p>
+      <div class="verdict reveal">
+        <p>Eren isn’t the greatest because he is the strongest.</p>
+        <p>He is the greatest because his story forces you to ask what freedom, morality and sacrifice really mean.</p>
+        <p>From “I will kill all the Titans” to one of the biggest philosophical debates in anime.</p>
+      </div>
+      <p class="goat reveal">That’s why he’s my GOAT.</p>
+    </div>
+  </section>
+</div>
+
 </main>
 
-<footer class="footer">
+<footer class="footer" data-page="yone">
   <div class="wrap footer__inner">
     <p class="footer__legal">Independent fan project. This site is not affiliated with Riot Games, nor endorsed or sponsored by Riot Games, and does not reflect the views of Riot Games. League of Legends and Yone are trademarks or registered trademarks of Riot Games, Inc.</p>
     <a class="footer__top" href="#top">Back to top ↑</a>
   </div>
 </footer>
+
+<footer class="footer" data-page="eren">
+  <div class="wrap footer__inner">
+    <p class="footer__legal">Independent fan page. Attack on Titan and Eren Yeager belong to their respective creators and rights holders. Background artwork belongs to its original artist.</p>
+    <a class="footer__top" href="#eren">Back to top ↑</a>
+  </div>
+</footer>
+
+<div class="birds" aria-hidden="true" data-birds></div>
 
 <script>
 "use strict";
@@ -583,7 +743,9 @@ const SNAPSHOT_DATA = {
 };
 
 const ASSETS = {
-  splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_0.jpg"
+  splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_0.jpg",
+  jungleSplash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_55.jpg", // High Noon Yone
+  erenArt: "https://cdnb.artstation.com/p/assets/images/images/033/778/985/large/envie-p-s.jpg?1610546589"
 };
 
 /* ================================================================
@@ -816,6 +978,184 @@ function initChampionArt() {
   img.src = ASSETS.splash;
 }
 
+/* Jungler note background: High Noon Yone (gradient stays if the image fails) */
+function initJungleArt() {
+  const node = $("[data-art-jungle]");
+  if (!node) return;
+  const img = new Image();
+  img.decoding = "async";
+  img.onload = () => {
+    node.style.setProperty("--art", 'url("' + ASSETS.jungleSplash + '")');
+    node.classList.add("has-art");
+  };
+  img.onerror = () => { /* fallback: plain dark panel */ };
+  img.src = ASSETS.jungleSplash;
+}
+
+/* ================================================================
+   PAGES — Yone (default) / Eren, hash routing inside one file
+   ================================================================ */
+const PAGE_TITLES = { yone: document.title, eren: "Eren Yeager — Attack on Titan" };
+
+const BIRD_SVG = '<svg class="bird__svg" viewBox="0 0 64 60" aria-hidden="true" focusable="false">' +
+  '<g class="bird__wing bird__wing--far"><path d="M27 29.5C23 21 18 14 11 8c10 2 19 11 27 21.5Z"/></g>' +
+  '<path d="M4 31l8-2c10-4 24-4 34-1 4-2 7-2 9-.5L62 30l-7 1.5c-3 1.5-7 2-11 1C34 35 20 35 12 33Z"/>' +
+  '<g class="bird__wing"><path d="M32 29.5C28 20 22 12 15 5c11 3 21 13 29 24.5Z"/></g>' +
+  '</svg>';
+
+const CAGE_SVG = (() => {
+  let bars = "";
+  [14, 26, 38, 50, 62, 74, 86].forEach((x) => {
+    bars += '<path d="M50 14C' + (50 + (x - 50) * 1.25).toFixed(1) + " 34 " + (50 + (x - 50) * 1.1).toFixed(1) + " 66 " + x + ' 96"/>';
+  });
+  return '<svg class="bird__cage" viewBox="0 0 100 120" aria-hidden="true" focusable="false">' +
+    '<circle cx="50" cy="7" r="4"/><path d="M50 11v3"/>' + bars +
+    '<path d="M15 84Q50 91 85 84"/><path d="M11 96h78"/><path d="M14 96v6q36 7 72 0v-6"/></svg>';
+})();
+
+// size = width in px · speed = px travelled per px scrolled · offset = start position across the screen
+const BIRDS = [
+  { size: 60, y: 0.16, speed: 0.85, offset: 0.10, flap: 0.85, bob: 4.2, amp: 26, op: 0.95, blur: 0 },
+  { size: 39, y: 0.30, speed: 0.55, offset: 0.55, flap: 0.95, bob: 5.0, amp: 18, op: 0.80, blur: 0 },
+  { size: 29, y: 0.10, speed: 0.38, offset: 0.80, flap: 1.05, bob: 3.6, amp: 12, op: 0.75, blur: 0.4 },
+  { size: 49, y: 0.62, speed: 0.72, offset: 0.30, flap: 0.90, bob: 4.6, amp: 24, op: 0.90, blur: 0 },
+  { size: 34, y: 0.75, speed: 0.48, offset: 0.68, flap: 1.00, bob: 5.4, amp: 16, op: 0.70, blur: 0.4 },
+  { size: 23, y: 0.45, speed: 0.30, offset: 0.92, flap: 1.10, bob: 3.9, amp: 10, op: 0.70, blur: 0.5 },
+  { size: 44, y: 0.88, speed: 0.62, offset: 0.05, flap: 0.88, bob: 4.8, amp: 20, op: 0.85, blur: 0 }
+];
+
+function createBirds() {
+  const layer = $("[data-birds]");
+  if (!layer) return null;
+  const art = $("[data-eren-art]");
+  const items = BIRDS.map((cfg, index) => {
+    const el = document.createElement("div");
+    el.className = "bird";
+    el.style.width = cfg.size + "px";
+    el.style.opacity = String(cfg.op);
+    if (cfg.blur) el.style.filter = "blur(" + cfg.blur + "px)";
+    el.style.setProperty("--flap", cfg.flap + "s");
+    el.style.setProperty("--bob", cfg.bob + "s");
+    el.innerHTML = '<div class="bird__flip">' + BIRD_SVG + "</div>" + CAGE_SVG;
+    layer.appendChild(el);
+    return { cfg, el, index };
+  });
+  let vw = window.innerWidth;
+  let vh = window.innerHeight;
+  let smooth = window.scrollY;
+  let prev = smooth;
+  let back = false;
+  let raf = 0;
+
+  const render = () => {
+    raf = 0;
+    const sy = window.scrollY;
+    smooth += (sy - smooth) * 0.1;
+    const delta = sy - prev;
+    prev = sy;
+    if (Math.abs(delta) > 1 && (delta < 0) !== back) {
+      back = delta < 0;
+      items.forEach((b) => b.el.classList.toggle("is-back", back));
+    }
+    items.forEach(({ cfg, el, index }) => {
+      const span = vw + cfg.size * 2;
+      const x = (((cfg.offset * span + smooth * cfg.speed) % span) + span) % span - cfg.size;
+      const y = cfg.y * vh + Math.sin(smooth * 0.0022 * (0.6 + cfg.speed) + index * 1.7) * cfg.amp;
+      el.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+    });
+    if (art) art.style.setProperty("--edim", Math.min(0.56, 0.1 + (smooth / vh) * 0.45).toFixed(3));
+    if (Math.abs(sy - smooth) > 0.3) raf = window.requestAnimationFrame(render);
+  };
+  const active = () => document.documentElement.getAttribute("data-page-active") === "eren";
+  const kick = () => { if (active() && !raf) raf = window.requestAnimationFrame(render); };
+  // Scroll stopped (and birds settled): wings freeze and a cage closes around each bird.
+  let idleTimer = 0;
+  const setIdle = (on) => layer.classList.toggle("is-idle", on);
+  const checkIdle = () => {
+    idleTimer = 0;
+    if (!active()) return;
+    if (Math.abs(window.scrollY - smooth) < 3) setIdle(true);
+    else idleTimer = window.setTimeout(checkIdle, 120);
+  };
+  const onScroll = () => {
+    if (!active()) return;
+    setIdle(false);
+    window.clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(checkIdle, 200);
+    kick();
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", () => { vw = window.innerWidth; vh = window.innerHeight; kick(); });
+  return {
+    enter() {
+      window.clearTimeout(idleTimer);
+      setIdle(false);
+      smooth = window.scrollY;
+      prev = smooth;
+      vw = window.innerWidth;
+      vh = window.innerHeight;
+      if (!raf) raf = window.requestAnimationFrame(render);
+    }
+  };
+}
+
+function loadErenArt() {
+  const node = $("[data-eren-art]");
+  if (!node || node.dataset.loading) return;
+  node.dataset.loading = "1";
+  const img = new Image();
+  img.decoding = "async";
+  img.referrerPolicy = "no-referrer";
+  img.onload = () => {
+    node.style.setProperty("--art", 'url("' + ASSETS.erenArt + '")');
+    node.classList.add("has-art");
+  };
+  img.onerror = () => { /* fallback: dark gradient background */ };
+  img.src = ASSETS.erenArt;
+}
+
+function initPages() {
+  const root = document.documentElement;
+  const cats = $$("[data-cat]");
+  let current = null;
+  let birds;
+  const pageFromHash = () => (/^#eren(-|$)/.test(window.location.hash) ? "eren" : "yone");
+  const jump = (fn) => {
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    fn();
+    root.style.scrollBehavior = previous;
+  };
+  const route = () => {
+    const name = pageFromHash();
+    const first = current === null;
+    const changed = name !== current;
+    current = name;
+    root.setAttribute("data-page-active", name);
+    document.title = PAGE_TITLES[name];
+    cats.forEach((link) => {
+      if (link.dataset.cat === name) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+    if (name === "eren") {
+      loadErenArt();
+      if (birds === undefined) birds = createBirds();
+      if (birds) birds.enter();
+    }
+    if (!changed || first) return;
+    const id = window.location.hash.slice(1);
+    const target = id && id !== "eren" ? document.getElementById(id) : null;
+    jump(() => {
+      if (target) target.scrollIntoView({ block: "start" });
+      else window.scrollTo(0, 0);
+    });
+    if (name === "eren" && birds) birds.enter();
+  };
+  window.addEventListener("hashchange", route);
+  route();
+}
+
 /* ================================================================
    MOBILE MENU
    ================================================================ */
@@ -996,6 +1336,8 @@ function init() {
   initAnimations();
   initCopyButtons();
   initChampionArt();
+  initJungleArt();
+  initPages();
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

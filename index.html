@@ -265,10 +265,19 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
   .plan__n{grid-row:1 / span 2;margin-bottom:0}
   .plan__step p{margin-top:6px}
 }
-.build{max-width:640px;margin-top:clamp(48px,6vw,80px);padding-left:clamp(20px,3vw,32px);border-left:1px solid var(--gold)}
+.build{max-width:720px;margin-top:clamp(48px,6vw,80px);padding-left:clamp(20px,3vw,32px);border-left:1px solid var(--gold)}
 .build__label{font-size:13px;color:var(--mute)}
 .build__name{margin-top:6px;font-family:var(--serif);font-size:clamp(26px,3vw,36px);font-weight:500;overflow-wrap:anywhere}
 .build__text{margin-top:10px;max-width:52ch;font-size:15.5px;line-height:1.65;color:var(--dim)}
+.items{display:grid;gap:14px;margin:26px 0 0;padding:0;list-style:none}
+.item{display:flex;align-items:flex-start;gap:clamp(14px,2vw,20px);padding:clamp(14px,2vw,18px);border:1px solid var(--line);border-radius:18px;background:rgba(239,234,224,.025)}
+.item--boots{margin-top:10px}
+.item__frame{position:relative;flex:none;width:clamp(56px,9vw,72px);aspect-ratio:1;border:1px solid var(--gold);border-radius:14px;overflow:hidden;background:#0c0f13;box-shadow:0 10px 28px -14px rgba(200,170,110,.55)}
+.item__frame img{display:block;width:100%;height:100%;object-fit:cover}
+.item__body{min-width:0}
+.item__tag{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.item__name{margin-top:3px;font-family:var(--serif);font-size:clamp(21px,2.5vw,27px);font-weight:500;line-height:1.2;overflow-wrap:anywhere}
+.item__text{margin-top:8px;max-width:54ch;font-size:15px;line-height:1.65;color:var(--dim)}
 
 /* ---------- Jungler note ---------- */
 .jungle{position:relative;isolation:isolate;overflow:hidden;padding:clamp(24px,5vw,64px);border:1px solid rgba(95,214,228,.22);border-radius:32px;background:radial-gradient(80% 100% at 0% 0%,rgba(95,214,228,.09),transparent 60%),#0f1318}
@@ -317,6 +326,12 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 .pcard__grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(32px,6vw,88px);align-items:end}
 @media (max-width:859px){.pcard__grid{grid-template-columns:minmax(0,1fr)}}
 .pcard__name{font-family:var(--serif);font-weight:600;font-size:clamp(56px,10vw,132px);line-height:.92;letter-spacing:.05em;color:var(--gold-hi)}
+/* fix: background-clip:text only paints inside the element box, so the box must hug the text and the text must fit its column (otherwise the last letter gets cut) */
+.pcard__name{display:block;width:fit-content;padding-right:.06em}
+@supports (font-size:1cqw){
+  .pcard__grid>div:first-child{container-type:inline-size}
+  .pcard__name{font-size:clamp(44px,22cqw,132px)}
+}
 .pcard__champ{margin-top:20px;font-size:clamp(13px,1.5vw,16px);font-weight:600;letter-spacing:.32em;color:var(--gold)}
 .pcard__role{display:inline-block;margin-top:22px;padding:9px 22px;border:1px solid var(--gold);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.26em;color:var(--gold-hi)}
 .pcard__stats{padding:6px clamp(18px,2.4vw,28px);border:1px solid var(--line);border-radius:22px;background:rgba(10,12,15,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
@@ -336,6 +351,12 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 .footer__legal{flex:1 1 420px;max-width:74ch;font-size:13px;line-height:1.7;color:var(--mute)}
 .footer__top{font-size:14px;color:var(--dim);transition:color .3s var(--ease)}
 .footer__top:hover{color:var(--gold-hi)}
+.footer__socials{flex:1 0 100%;display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:4px;padding-top:32px;border-top:1px solid var(--line)}
+.social{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--line-2);background:rgba(239,234,224,.03);color:var(--dim);transition:color .3s var(--ease),border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
+.social svg{display:block;width:20px;height:20px;fill:currentColor}
+.social:hover,.social:focus-visible{color:var(--gold-hi);border-color:var(--gold);background:rgba(200,170,110,.08);transform:translateY(-2px);box-shadow:0 10px 26px -12px rgba(200,170,110,.6)}
+.social:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.social{transition:none}.social:hover,.social:focus-visible{transform:none}}
 
 /* ---------- Categories (top bar) & pages ---------- */
 .nav__left{display:flex;align-items:center;gap:clamp(22px,3vw,36px);min-width:0}
@@ -354,7 +375,7 @@ html[data-page-active="eren"] [data-page="yone"]{display:none}
 .eren-bg{--edim:.1;position:fixed;inset:0;z-index:-1;pointer-events:none}
 .eren-bg::before{content:"";position:absolute;inset:0;background-image:var(--art);background-size:cover;background-position:60% 35%;opacity:0;transition:opacity 1.6s var(--ease)}
 .eren-bg.has-art::before{opacity:1}
-.eren-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,13,16,.5) 0%,rgba(11,13,16,.1) 55%,rgba(11,13,16,.3) 100%),linear-gradient(180deg,rgba(11,13,16,.4) 0%,rgba(11,13,16,0) 30%,rgba(11,13,16,.4) 100%),rgba(11,13,16,var(--edim))}
+.eren-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 95% at 50% 42%,rgba(0,0,0,0) 52%,rgba(4,6,9,.55) 100%),linear-gradient(90deg,rgba(11,13,16,.5) 0%,rgba(11,13,16,.1) 55%,rgba(11,13,16,.3) 100%),linear-gradient(180deg,rgba(11,13,16,.4) 0%,rgba(11,13,16,0) 30%,rgba(11,13,16,.4) 100%),rgba(11,13,16,var(--edim))}
 .hero--eren .hero__name{filter:drop-shadow(0 6px 32px rgba(0,0,0,.55))}
 .hero--eren .hero__id{text-shadow:0 1px 14px rgba(0,0,0,.85)}
 .hero--eren .hero__quote{max-width:26ch;text-shadow:0 2px 26px rgba(0,0,0,.75)}
@@ -372,13 +393,33 @@ html[data-page-active="eren"] .birds{display:block}
 .bird{position:absolute;left:0;top:0;will-change:transform}
 .bird__flip{transition:transform .5s var(--ease)}
 .bird.is-back .bird__flip{transform:scaleX(-1)}
-.bird__svg{display:block;width:100%;height:auto;overflow:visible;fill:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(255,255,255,.4));animation:birdBob var(--bob,4.4s) ease-in-out infinite}
+.bird__svg{display:block;width:100%;height:auto;overflow:visible;fill:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(255,255,255,.4));animation:birdBob var(--bob,4.4s) ease-in-out infinite;transition:filter .9s var(--ease)}
 .bird__wing{transform-origin:37px 29.5px;animation:birdFlap var(--flap,.9s) ease-in-out infinite}
 .bird__wing--far{opacity:.55;animation-delay:calc(var(--flap,.9s) * -.14)}
 .bird__cage{position:absolute;left:50%;top:50%;width:175%;height:auto;overflow:visible;fill:none;stroke:#e8d6a6;stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:translate(-50%,-58%) scale(.92);transition:opacity .5s var(--ease),transform .7s var(--ease);pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 4px rgba(200,170,110,.45))}
 .bird__cage *{vector-effect:non-scaling-stroke}
 .birds.is-idle .bird__cage{opacity:.95;transform:translate(-50%,-46%) scale(1)}
 .birds.is-idle .bird__wing,.birds.is-idle .bird__svg{animation-play-state:paused!important}
+/* Cage-locking: les barreaux se dessinent, le cadenas tombe et se verrouille, l'oiseau s'éteint */
+.bird__cage > :is(path,circle){stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset .55s var(--ease) var(--d,0s)}
+.birds.is-idle .bird__cage > :is(path,circle){stroke-dashoffset:0}
+.bird__cage .cage-lock{opacity:0;transform:translateY(-30px);transform-box:fill-box;transform-origin:center;transition:transform .5s cubic-bezier(.34,1.56,.64,1) 1.05s,opacity .25s linear 1.05s}
+.birds.is-idle .bird__cage .cage-lock{opacity:1;transform:translateY(0);animation:lockClick .4s var(--ease) 1.75s}
+.bird__cage .cage-lock__shackle{stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset .4s var(--ease) 1.15s}
+.birds.is-idle .bird__cage .cage-lock__shackle{stroke-dashoffset:0}
+.bird__cage .cage-lock rect{fill:#12161b;stroke:#e8d6a6;stroke-width:1.6px}
+.bird__cage .cage-lock__hole{fill:#e8d6a6;stroke:none}
+.birds.is-idle .bird__svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(255,255,255,.25)) grayscale(.5) brightness(.72)}
+@keyframes lockClick{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(1.2px) scale(1.1,.9)}70%{transform:translateY(-.8px) scale(.95,1.05)}}
+/* Plumes qui dérivent en fond */
+.feather{position:absolute;top:0;left:var(--x,50vw);width:14px;height:auto;opacity:0;animation:featherFall var(--dur,16s) linear var(--delay,0s) infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
+@keyframes featherFall{
+  0%{transform:translate3d(0,-10vh,0) rotate(-10deg);opacity:0}
+  6%{opacity:var(--op,.35)}
+  50%{transform:translate3d(calc(var(--sway,60px) * -.5),52vh,0) rotate(75deg)}
+  86%{opacity:var(--op,.35)}
+  100%{transform:translate3d(var(--sway,60px),112vh,0) rotate(165deg);opacity:0}
+}
 @keyframes birdFlap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(-.85)}}
 @keyframes birdBob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
 @media (prefers-reduced-motion:reduce){
@@ -517,8 +558,39 @@ html[data-page-active="eren"] .birds{display:block}
       </ol>
       <aside class="build reveal" aria-label="Build preference">
         <p class="build__label">Build preference</p>
-        <p class="build__name" data-bind="build"></p>
-        <p class="build__text">I regularly play this item. It's a preference, not an absolute truth: I adapt to the game and to the enemy composition.</p>
+        <p class="build__text">I regularly play these items. It's a preference, not an absolute truth: I adapt to the game and to the enemy composition.</p>
+        <ol class="items">
+        <li class="item">
+          <span class="item__frame"><img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/f6d7262aa9cd9ecdd005a8b1c7f2750ce2d3c3b2-512x512.png" alt="Yun Tal Wildarrows item icon" width="72" height="72" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></span>
+          <div class="item__body">
+            <p class="item__tag">Item 1</p>
+            <p class="item__name"><span data-bind="build"></span></p>
+          </div>
+        </li>
+        <li class="item">
+          <span class="item__frame"><img src="https://wiki.leagueoflegends.com/en-us/images/Infinity_Edge_item_HD.png?a5e3f" alt="Infinity Edge item icon" width="72" height="72" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></span>
+          <div class="item__body">
+            <p class="item__tag">Item 2</p>
+            <p class="item__name">Infinity Edge</p>
+            <p class="item__text">A crit item: it gives attack damage, critical strike chance and bonus critical damage, so your crits hit for about 230% damage instead of 200%. The more you crit, the more it pays off.</p>
+          </div>
+        </li>
+        <li class="item">
+          <span class="item__frame"><img src="https://vignette3.wikia.nocookie.net/leagueoflegends/images/4/44/Soif-de-sang_Obj.png/revision/latest?cb=20170121201931&amp;path-prefix=fr" alt="Bloodthirster item icon" width="72" height="72" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></span>
+          <div class="item__body">
+            <p class="item__tag">Item 3</p>
+            <p class="item__name">Bloodthirster</p>
+          </div>
+        </li>
+        <li class="item item--boots">
+          <span class="item__frame"><img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/9b1ba3fbc73a4aadea8c057f78f00fa82d3820ba-512x512.png" alt="Gluttonous Greaves item icon" width="72" height="72" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></span>
+          <div class="item__body">
+            <p class="item__tag">Boots</p>
+            <p class="item__name">Gluttonous Greaves</p>
+            <p class="item__text">Boots with movement speed and omnivamp, which heals you for a part of the damage you deal. Every takedown on an enemy champion adds a bit more omnivamp (up to 10 stacks), so the more you win fights, the more you sustain.</p>
+          </div>
+        </li>
+        </ol>
       </aside>
     </div>
   </section>
@@ -627,10 +699,17 @@ html[data-page-active="eren"] .birds{display:block}
 
 </main>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="ic-snapchat" viewBox="0 0 24 24"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></symbol><symbol id="ic-tiktok" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></symbol><symbol id="ic-instagram" viewBox="0 0 24 24"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></symbol></svg>
+
 <footer class="footer" data-page="yone">
   <div class="wrap footer__inner">
     <p class="footer__legal">Independent fan project. This site is not affiliated with Riot Games, nor endorsed or sponsored by Riot Games, and does not reflect the views of Riot Games. League of Legends and Yone are trademarks or registered trademarks of Riot Games, Inc.</p>
     <a class="footer__top" href="#top">Back to top ↑</a>
+    <div class="footer__socials">
+      <a class="social" href="https://www.snapchat.com/add/ayooub19.07" target="_blank" rel="noopener noreferrer" aria-label="Snapchat — ayooub19.07" title="Snapchat — ayooub19.07"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-snapchat"/></svg></a>
+      <a class="social" href="https://www.tiktok.com/@amaxord212" target="_blank" rel="noopener noreferrer" aria-label="TikTok — @amaxord212" title="TikTok — @amaxord212"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-tiktok"/></svg></a>
+      <a class="social" href="https://www.instagram.com/ay.b1907/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — ay.b1907" title="Instagram — ay.b1907"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-instagram"/></svg></a>
+    </div>
   </div>
 </footer>
 
@@ -638,6 +717,11 @@ html[data-page-active="eren"] .birds{display:block}
   <div class="wrap footer__inner">
     <p class="footer__legal">Independent fan page. Attack on Titan and Eren Yeager belong to their respective creators and rights holders. Background artwork belongs to its original artist.</p>
     <a class="footer__top" href="#eren">Back to top ↑</a>
+    <div class="footer__socials">
+      <a class="social" href="https://www.snapchat.com/add/ayooub19.07" target="_blank" rel="noopener noreferrer" aria-label="Snapchat — ayooub19.07" title="Snapchat — ayooub19.07"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-snapchat"/></svg></a>
+      <a class="social" href="https://www.tiktok.com/@amaxord212" target="_blank" rel="noopener noreferrer" aria-label="TikTok — @amaxord212" title="TikTok — @amaxord212"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-tiktok"/></svg></a>
+      <a class="social" href="https://www.instagram.com/ay.b1907/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — ay.b1907" title="Instagram — ay.b1907"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-instagram"/></svg></a>
+    </div>
   </div>
 </footer>
 
@@ -1006,13 +1090,23 @@ const BIRD_SVG = '<svg class="bird__svg" viewBox="0 0 64 60" aria-hidden="true" 
   '</svg>';
 
 const CAGE_SVG = (() => {
-  let bars = "";
-  [14, 26, 38, 50, 62, 74, 86].forEach((x) => {
-    bars += '<path d="M50 14C' + (50 + (x - 50) * 1.25).toFixed(1) + " 34 " + (50 + (x - 50) * 1.1).toFixed(1) + " 66 " + x + ' 96"/>';
+  const parts = [
+    '<circle cx="50" cy="7" r="4" pathLength="100" style="--d:0ms"/>',
+    '<path d="M50 11v3" pathLength="100" style="--d:90ms"/>'
+  ];
+  [14, 26, 38, 50, 62, 74, 86].forEach((x, i) => {
+    parts.push('<path d="M50 14C' + (50 + (x - 50) * 1.25).toFixed(1) + " 34 " + (50 + (x - 50) * 1.1).toFixed(1) + " 66 " + x + ' 96" pathLength="100" style="--d:' + (180 + i * 70) + 'ms"/>');
   });
-  return '<svg class="bird__cage" viewBox="0 0 100 120" aria-hidden="true" focusable="false">' +
-    '<circle cx="50" cy="7" r="4"/><path d="M50 11v3"/>' + bars +
-    '<path d="M15 84Q50 91 85 84"/><path d="M11 96h78"/><path d="M14 96v6q36 7 72 0v-6"/></svg>';
+  parts.push('<path d="M15 84Q50 91 85 84" pathLength="100" style="--d:700ms"/>');
+  parts.push('<path d="M11 96h78" pathLength="100" style="--d:790ms"/>');
+  parts.push('<path d="M14 96v6q36 7 72 0v-6" pathLength="100" style="--d:880ms"/>');
+  parts.push('<g class="cage-lock">' +
+    '<path class="cage-lock__shackle" d="M45.5 99v-3.5a4.5 4.5 0 0 1 9 0V99" pathLength="100"/>' +
+    '<rect x="43.5" y="99" width="13" height="11" rx="2.2"/>' +
+    '<circle class="cage-lock__hole" cx="50" cy="103.2" r="1.6"/>' +
+    '<path class="cage-lock__hole" d="M50 104.4l-1.2 3.6h2.4z"/>' +
+    '</g>');
+  return '<svg class="bird__cage" viewBox="0 0 100 120" aria-hidden="true" focusable="false">' + parts.join("") + '</svg>';
 })();
 
 // size = width in px · speed = px travelled per px scrolled · offset = start position across the screen
@@ -1025,6 +1119,10 @@ const BIRDS = [
   { size: 23, y: 0.45, speed: 0.30, offset: 0.92, flap: 1.10, bob: 3.9, amp: 10, op: 0.70, blur: 0.5 },
   { size: 44, y: 0.88, speed: 0.62, offset: 0.05, flap: 0.88, bob: 4.8, amp: 20, op: 0.85, blur: 0 }
 ];
+
+const FEATHER_SVG = '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">' +
+  '<path d="M17.5 2.5c-4.6.7-8.8 3.4-11.6 7.4-1.8 2.5-2.9 5.4-3.3 8.1 2.7-.4 5.6-1.5 8.1-3.3 4-2.8 6.7-7 7.4-11.6z" fill="#f4f1ea"/>' +
+  '<path d="M3.5 17.5C7 12.5 11.5 7.5 17.5 2.5" fill="none" stroke="rgba(11,13,16,.35)" stroke-width=".8"/></svg>';
 
 function createBirds() {
   const layer = $("[data-birds]");
@@ -1042,6 +1140,19 @@ function createBirds() {
     layer.appendChild(el);
     return { cfg, el, index };
   });
+  // Plumes qui dérivent en fond (page Eren uniquement)
+  for (let i = 0; i < 9; i++) {
+    const f = document.createElement("div");
+    f.className = "feather";
+    f.style.setProperty("--x", (Math.random() * 100).toFixed(1) + "vw");
+    f.style.setProperty("--sway", Math.round(Math.random() * 140 - 50) + "px");
+    f.style.setProperty("--dur", (11 + Math.random() * 9).toFixed(1) + "s");
+    f.style.setProperty("--delay", (-Math.random() * 18).toFixed(1) + "s");
+    f.style.setProperty("--op", (0.16 + Math.random() * 0.3).toFixed(2));
+    f.style.width = Math.round(9 + Math.random() * 9) + "px";
+    f.innerHTML = FEATHER_SVG;
+    layer.appendChild(f);
+  }
   let vw = window.innerWidth;
   let vh = window.innerHeight;
   let smooth = window.scrollY;
@@ -1089,6 +1200,22 @@ function createBirds() {
 
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", () => { vw = window.innerWidth; vh = window.innerHeight; kick(); });
+  // Filet de sécurité: verrouille la cage même si rAF/scroll sont étouffés (onglet en arrière-plan)
+  let lastY = window.scrollY;
+  let lastMoveAt = performance.now();
+  window.setInterval(() => {
+    if (!active()) { lastY = window.scrollY; lastMoveAt = performance.now(); return; }
+    const sy = window.scrollY;
+    if (sy !== lastY) {
+      lastY = sy;
+      lastMoveAt = performance.now();
+      setIdle(false);
+      kick();
+    } else if (!layer.classList.contains("is-idle") && performance.now() - lastMoveAt > 1600) {
+      smooth = prev = sy;
+      setIdle(true);
+    }
+  }, 250);
   return {
     enter() {
       window.clearTimeout(idleTimer);

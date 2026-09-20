@@ -444,6 +444,13 @@ html[data-page-active="eren"] .birds{display:block}
 .bird__cage .cage-lock rect{fill:#12161b;stroke:#e8d6a6;stroke-width:1.6px}
 .bird__cage .cage-lock__hole{fill:#e8d6a6;stroke:none}
 .birds.is-idle .bird__svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(255,255,255,.25)) grayscale(.5) brightness(.72)}
+/* Libération (clic sur l'oiseau ou fin de page): la cage éclate, l'oiseau repart vif */
+.birds .bird.is-hover .bird__flip{filter:brightness(1.55) drop-shadow(0 0 7px rgba(255,255,255,.55))}
+.birds .bird.is-free .bird__flip{transform:scaleX(var(--face,1)) rotate(var(--tilt,0deg));transition:transform .45s var(--ease)}
+.birds .bird.is-free .bird__svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 6px rgba(255,255,255,.5))}
+.birds .bird.is-free .bird__wing,.birds .bird.is-free .bird__svg{animation-play-state:running!important}
+.birds .bird.is-free .bird__cage{opacity:0;transform:translate(-50%,-46%) scale(1.28) rotate(7deg);transition:opacity .3s linear,transform .5s var(--ease)}
+.birds .bird.is-free .bird__cage .cage-lock{opacity:0;transform:translateY(16px) rotate(18deg);animation:none;transition:opacity .2s linear,transform .4s cubic-bezier(.55,0,.85,.55)}
 @keyframes lockClick{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(1.2px) scale(1.1,.9)}70%{transform:translateY(-.8px) scale(.95,1.05)}}
 /* Plumes qui dérivent en fond */
 .feather{position:absolute;top:0;left:var(--x,50vw);width:14px;height:auto;opacity:0;animation:featherFall var(--dur,16s) linear var(--delay,0s) infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
@@ -1184,7 +1191,7 @@ function createBirds() {
     el.style.setProperty("--bob", cfg.bob + "s");
     el.innerHTML = '<div class="bird__flip">' + BIRD_SVG + "</div>" + CAGE_SVG;
     layer.appendChild(el);
-    return { cfg, el, index };
+    return { cfg, el, index, state: "fly", x: 0, y: 0, dir: 1, t0: 0, prev: 0, phase: Math.random() * 6.28 };
   });
   // Plumes qui dérivent en fond (page Eren uniquement)
   for (let i = 0; i < 9; i++) {
@@ -1214,13 +1221,17 @@ function createBirds() {
     prev = sy;
     if (Math.abs(delta) > 1 && (delta < 0) !== back) {
       back = delta < 0;
-      items.forEach((b) => b.el.classList.toggle("is-back", back));
+      items.forEach((b) => { if (b.state === "fly") b.el.classList.toggle("is-back", back); });
     }
-    items.forEach(({ cfg, el, index }) => {
+    items.forEach((b) => {
+      if (b.state !== "fly") return;
+      const cfg = b.cfg;
       const span = vw + cfg.size * 2;
       const x = (((cfg.offset * span + smooth * cfg.speed) % span) + span) % span - cfg.size;
-      const y = cfg.y * vh + Math.sin(smooth * 0.0022 * (0.6 + cfg.speed) + index * 1.7) * cfg.amp;
-      el.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+      const y = cfg.y * vh + Math.sin(smooth * 0.0022 * (0.6 + cfg.speed) + b.index * 1.7) * cfg.amp;
+      b.x = x;
+      b.y = y;
+      b.el.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
     });
     if (art) art.style.setProperty("--edim", Math.min(0.56, 0.1 + (smooth / vh) * 0.45).toFixed(3));
     if (Math.abs(sy - smooth) > 0.3) raf = window.requestAnimationFrame(render);
@@ -1242,6 +1253,7 @@ function createBirds() {
     window.clearTimeout(idleTimer);
     idleTimer = window.setTimeout(checkIdle, 200);
     kick();
+    maybeReleaseAtEnd();
   };
 
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -1257,11 +1269,106 @@ function createBirds() {
       lastMoveAt = performance.now();
       setIdle(false);
       kick();
+      maybeReleaseAtEnd();
     } else if (!layer.classList.contains("is-idle") && performance.now() - lastMoveAt > 1600) {
       smooth = prev = sy;
       setIdle(true);
     }
   }, 250);
+
+  // ---- Libération: un clic sur un oiseau ouvre la cage et il s'envole hors de l'écran ----
+  // (l'envol reste joué même en prefers-reduced-motion, comme le reste des animations d'oiseaux)
+  let escRaf = 0;
+
+  const hitTest = (cx, cy) => {
+    for (const b of items) {
+      if (b.state !== "fly") continue;
+      const r = b.el.getBoundingClientRect();
+      if (r.width && cx >= r.left - 8 && cx <= r.right + 8 && cy >= r.top - 8 && cy <= r.bottom + 8) return b;
+    }
+    return null;
+  };
+
+  const tickEscape = () => {
+    escRaf = 0;
+    const now = performance.now();
+    let live = false;
+    items.forEach((b) => {
+      if (b.state !== "escaping") return;
+      const dt = Math.min(48, now - b.prev);
+      b.prev = now;
+      const k = Math.min(1, (now - b.t0) / 1500);
+      const ease = k * k * (3 - 2 * k);
+      b.x += b.dir * (0.16 + 1.4 * ease) * dt;
+      b.y += (-(0.38 * (1 - ease) + 0.05) + Math.sin((now - b.t0) * 0.006 + b.phase) * 0.05) * dt;
+      if (b.x < -b.cfg.size * 2.4 || b.x > vw + b.cfg.size * 2.4 || b.y < -b.cfg.size * 3) {
+        b.state = "escaped";
+        b.el.style.visibility = "hidden";
+        return;
+      }
+      b.el.style.transform = "translate3d(" + b.x.toFixed(1) + "px," + b.y.toFixed(1) + "px,0)";
+      live = true;
+    });
+    if (live) escRaf = window.requestAnimationFrame(tickEscape);
+  };
+
+  const release = (b) => {
+    if (!b || b.state !== "fly") return;
+    b.state = "escaping";
+    const el = b.el;
+    el.classList.remove("is-hover");
+    el.classList.add("is-free");
+    el.style.setProperty("--flap", "0.3s");
+    const r = el.getBoundingClientRect();
+    if (r.width) { b.x = r.left; b.y = r.top; }
+    b.dir = el.classList.contains("is-back") ? -1 : 1;
+    el.style.setProperty("--face", String(b.dir));
+    el.style.setProperty("--tilt", (b.dir * -12) + "deg");
+    b.t0 = b.prev = performance.now();
+    if (!escRaf) escRaf = window.requestAnimationFrame(tickEscape);
+  };
+
+  const releaseAll = () => {
+    let n = 0;
+    items.forEach((b) => {
+      if (b.state !== "fly") return;
+      n += 1;
+      window.setTimeout(() => release(b), n * 130);
+    });
+  };
+
+  // Au bout de la page Eren, tous les oiseaux restants prennent leur envol.
+  const maybeReleaseAtEnd = () => {
+    if (!active()) return;
+    const left = document.documentElement.scrollHeight - (window.scrollY + vh);
+    if (left <= vh * 0.5) releaseAll();
+  };
+
+  document.addEventListener("click", (event) => {
+    if (!active() || event.button) return;
+    if (!(event.target instanceof Element) || event.target.closest("a,button,input,textarea,select,label")) return;
+    release(hitTest(event.clientX, event.clientY));
+  });
+
+  let hoverRaf = 0;
+  let mx = 0;
+  let my = 0;
+  document.addEventListener("mousemove", (event) => {
+    if (!active()) {
+      if (document.body.style.cursor) document.body.style.cursor = "";
+      return;
+    }
+    mx = event.clientX;
+    my = event.clientY;
+    if (hoverRaf) return;
+    hoverRaf = window.requestAnimationFrame(() => {
+      hoverRaf = 0;
+      const b = active() ? hitTest(mx, my) : null;
+      items.forEach((it) => it.el.classList.toggle("is-hover", it === b));
+      document.body.style.cursor = b ? "pointer" : "";
+    });
+  }, { passive: true });
+
   return {
     enter() {
       window.clearTimeout(idleTimer);
@@ -1271,6 +1378,7 @@ function createBirds() {
       vw = window.innerWidth;
       vh = window.innerHeight;
       if (!raf) raf = window.requestAnimationFrame(render);
+      maybeReleaseAtEnd();
     }
   };
 }

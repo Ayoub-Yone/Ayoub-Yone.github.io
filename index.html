@@ -351,6 +351,40 @@ section[id]{scroll-margin-top:calc(var(--nav-h) * .5)}
 .footer__legal{flex:1 1 420px;max-width:74ch;font-size:13px;line-height:1.7;color:var(--mute)}
 .footer__top{font-size:14px;color:var(--dim);transition:color .3s var(--ease)}
 .footer__top:hover{color:var(--gold-hi)}
+.footer__links{flex:1 0 100%;display:flex;justify-content:center;flex-wrap:wrap;gap:4px 24px;margin-top:-8px;font-size:13px;color:var(--mute)}
+.footer__links button{padding:6px 2px;border:0;background:none;color:var(--dim);cursor:pointer;text-decoration:underline;text-decoration-color:rgba(239,234,224,.25);text-underline-offset:4px;transition:color .3s var(--ease),text-decoration-color .3s var(--ease)}
+.footer__links button:hover,.footer__links button:focus-visible{color:var(--gold-hi);text-decoration-color:var(--gold)}
+.footer__links button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
+.footer__copy{padding:6px 0}
+html.legal-open{overflow:hidden}
+.legal{width:min(840px,calc(100% - 24px));max-width:none;max-height:min(88vh,920px);margin:auto;padding:0;border:1px solid rgba(200,170,110,.4);border-radius:24px;background:#0f1318;color:var(--text);box-shadow:0 40px 120px -30px rgba(0,0,0,.9);overflow:hidden}
+.legal[open]{display:flex;flex-direction:column}
+.legal::backdrop{background:rgba(5,7,10,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.legal__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(16px,3vw,28px);border-bottom:1px solid var(--line)}
+.legal__title{font-family:var(--serif);font-size:clamp(19px,2.4vw,23px);font-weight:500}
+.legal__tools{display:flex;align-items:center;gap:8px}
+.legal__lang{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;overflow:hidden}
+.legal__lang button{min-width:42px;padding:7px 12px;border:0;background:none;color:var(--dim);font-size:12px;font-weight:600;letter-spacing:.14em;cursor:pointer;transition:background .25s var(--ease),color .25s var(--ease)}
+.legal__lang button[aria-pressed="true"]{background:rgba(200,170,110,.16);color:var(--gold-hi)}
+.legal__close{display:inline-grid;place-items:center;width:38px;height:38px;border:1px solid var(--line-2);border-radius:50%;background:none;color:var(--dim);font-size:20px;line-height:1;cursor:pointer;transition:color .25s var(--ease),border-color .25s var(--ease)}
+.legal__close:hover{color:var(--gold-hi);border-color:var(--gold)}
+.legal__lang button:focus-visible,.legal__close:focus-visible,.legal__nav button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.legal__nav{display:flex;flex-wrap:wrap;gap:8px;padding:12px clamp(16px,3vw,28px);border-bottom:1px solid var(--line)}
+.legal__nav button{padding:7px 14px;border:1px solid var(--line-2);border-radius:999px;background:none;color:var(--dim);font-size:13px;cursor:pointer;transition:color .25s var(--ease),border-color .25s var(--ease)}
+.legal__nav button:hover{color:var(--gold-hi);border-color:var(--gold)}
+.legal__body{position:relative;flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:6px clamp(18px,3vw,32px) 34px}
+.legal h3{margin:30px 0 8px;font-family:var(--serif);font-size:clamp(23px,3vw,28px);font-weight:500;color:var(--gold-hi)}
+.legal h4{margin:20px 0 6px;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.legal p,.legal li{font-size:15px;line-height:1.72;color:var(--dim)}
+.legal p{margin:0 0 10px}
+.legal ul{margin:0 0 10px;padding-left:20px;list-style:disc}
+.legal li{margin-bottom:5px}
+.legal strong{color:var(--text);font-weight:600}
+.legal a{color:var(--gold-hi);text-decoration:underline;text-underline-offset:3px}
+.legal .quote{padding:12px 16px;border-left:2px solid var(--gold);background:rgba(239,234,224,.03);border-radius:0 12px 12px 0;color:var(--text)}
+.legal .todo{padding:1px 6px;border:1px dashed var(--gold);border-radius:6px;background:rgba(200,170,110,.12);color:var(--gold-hi)}
+.legal__stamp{margin-top:26px;font-size:13px;color:var(--mute)}
+@media (max-width:520px){.legal{max-height:92vh;border-radius:18px}.legal__head{flex-wrap:wrap}}
 .footer__socials{flex:1 0 100%;display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:4px;padding-top:32px;border-top:1px solid var(--line)}
 .social{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--line-2);background:rgba(239,234,224,.03);color:var(--dim);transition:color .3s var(--ease),border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
 .social svg{display:block;width:20px;height:20px;fill:currentColor}
@@ -703,13 +737,19 @@ html[data-page-active="eren"] .birds{display:block}
 
 <footer class="footer" data-page="yone">
   <div class="wrap footer__inner">
-    <p class="footer__legal">Independent fan project. This site is not affiliated with Riot Games, nor endorsed or sponsored by Riot Games, and does not reflect the views of Riot Games. League of Legends and Yone are trademarks or registered trademarks of Riot Games, Inc.</p>
+    <p class="footer__legal">Independent, non-commercial fan project. This site isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
     <a class="footer__top" href="#top">Back to top ↑</a>
     <div class="footer__socials">
       <a class="social" href="https://www.snapchat.com/add/ayooub19.07" target="_blank" rel="noopener noreferrer" aria-label="Snapchat — ayooub19.07" title="Snapchat — ayooub19.07"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-snapchat"/></svg></a>
       <a class="social" href="https://www.tiktok.com/@amaxord212" target="_blank" rel="noopener noreferrer" aria-label="TikTok — @amaxord212" title="TikTok — @amaxord212"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-tiktok"/></svg></a>
       <a class="social" href="https://www.instagram.com/ay.b1907/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — ay.b1907" title="Instagram — ay.b1907"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-instagram"/></svg></a>
     </div>
+    <nav class="footer__links" aria-label="Legal">
+      <button type="button" data-legal-open="notice">Legal notice</button>
+      <button type="button" data-legal-open="privacy">Privacy &amp; cookies</button>
+      <button type="button" data-legal-open="credits">Disclaimer &amp; credits</button>
+      <span class="footer__copy">© 2026 Ayoub</span>
+    </nav>
   </div>
 </footer>
 
@@ -722,6 +762,12 @@ html[data-page-active="eren"] .birds{display:block}
       <a class="social" href="https://www.tiktok.com/@amaxord212" target="_blank" rel="noopener noreferrer" aria-label="TikTok — @amaxord212" title="TikTok — @amaxord212"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-tiktok"/></svg></a>
       <a class="social" href="https://www.instagram.com/ay.b1907/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — ay.b1907" title="Instagram — ay.b1907"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-instagram"/></svg></a>
     </div>
+    <nav class="footer__links" aria-label="Legal">
+      <button type="button" data-legal-open="notice">Legal notice</button>
+      <button type="button" data-legal-open="privacy">Privacy &amp; cookies</button>
+      <button type="button" data-legal-open="credits">Disclaimer &amp; credits</button>
+      <span class="footer__copy">© 2026 Ayoub</span>
+    </nav>
   </div>
 </footer>
 
@@ -1471,6 +1517,214 @@ function init() {
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
 else init();
+</script>
+
+<dialog class="legal" id="legal" aria-labelledby="legal-title" data-lang="en">
+  <div class="legal__head">
+    <h2 class="legal__title" id="legal-title">Legal information</h2>
+    <div class="legal__tools">
+      <div class="legal__lang" role="group" aria-label="Language">
+        <button type="button" data-legal-setlang="en" aria-pressed="true">EN</button>
+        <button type="button" data-legal-setlang="fr" aria-pressed="false">FR</button>
+      </div>
+      <button type="button" class="legal__close" data-legal-close aria-label="Close">×</button>
+    </div>
+  </div>
+  <div class="legal__nav">
+    <button type="button" data-legal-open="notice">Legal notice</button>
+    <button type="button" data-legal-open="privacy">Privacy &amp; cookies</button>
+    <button type="button" data-legal-open="credits">Disclaimer &amp; credits</button>
+  </div>
+  <div class="legal__body" tabindex="-1">
+      <div data-legal-lang="en" lang="en">
+        <section data-legal-section="notice">
+          <h3>Legal notice</h3>
+          <h4>Publisher</h4>
+          <p>This website is a personal, non-commercial project published by <strong>Ayoub</strong>, a private individual. In accordance with Article 6, III, 2 of French Law no. 2004-575 of 21 June 2004 (LCEN), the publisher has chosen to remain anonymous to the public and has given their identity details to the hosting provider below.</p>
+          <p><strong>Publication director:</strong> Ayoub. <strong>Contact:</strong> <a href="mailto:ayoub07aissaoui@gmail.com">ayoub07aissaoui@gmail.com</a></p>
+          <p><strong>Site address:</strong> <a href="https://ayoub-yone.github.io/" target="_blank" rel="noopener noreferrer">https://ayoub-yone.github.io/</a></p>
+          <h4>Hosting provider</h4>
+          <p>The site is hosted on <strong>GitHub Pages</strong> by <strong>GitHub, Inc.</strong> (a Microsoft company) — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, United States — <a href="https://support.github.com" target="_blank" rel="noopener noreferrer">support.github.com</a> (GitHub does not provide a public telephone number for hosting matters; contact is handled online). GitHub&#39;s privacy policy: <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">docs.github.com</a>.</p>
+          <h4>Non-commercial use</h4>
+          <p>This site contains no advertising, sells nothing, has no sponsors and no affiliate links, and earns no money.</p>
+          <h4>Content and liability</h4>
+          <p>Content is provided for information and entertainment, "as is". Ranked statistics come from profile screenshots and may be out of date; they are not official data. The publisher makes reasonable efforts to keep the site accurate but cannot guarantee it, and is not responsible for the content of external websites linked from this site (Blitz, Snapchat, TikTok, Instagram).</p>
+          <h4>Intellectual property</h4>
+          <p>The original texts, layout and code of this site are the work of the publisher and may not be copied without permission, beyond what the law allows. Third-party content (game assets, artwork, logos) remains the property of its owners: see "Disclaimer &amp; credits".</p>
+          <h4>Applicable law</h4>
+          <p>This site is governed by French law.</p>
+        </section>
+
+        <section data-legal-section="privacy">
+          <h3>Privacy &amp; cookies</h3>
+          <p class="quote"><strong>In short:</strong> this site sets no cookies, uses no analytics, advertising or tracking, has no forms or accounts, and does not collect personal data itself.</p>
+          <h4>Cookies and similar trackers</h4>
+          <p>The site does not store anything on your device: no cookies, no local storage, no fingerprinting. It loads no third-party scripts, frames or widgets. Because no non-essential tracker is used, no consent banner is required (Article 82 of the French Data Protection Act, ePrivacy rules).</p>
+          <h4>Technical data handled by the host</h4>
+          <p>Like any website, when you visit, your browser sends your IP address, browser type, date/time and the requested page to GitHub&#39;s servers (GitHub Pages). These logs are kept by the host for security and operation (legitimate interest, Article 6(1)(f) GDPR), under the host's own retention rules and privacy policy.</p>
+          <h4>Third-party images</h4>
+          <p>To display game art, item icons and backgrounds, your browser loads images directly from these third-party servers, which therefore receive your IP address and browser information (possibly outside the EU, e.g. in the USA). The publisher does not receive this data. Their own privacy policies apply.</p>
+          <ul>
+            <li>Riot Games: ddragon.leagueoflegends.com, cmsassets.rgpub.io</li>
+            <li>League of Legends Wiki (Weird Gloop): wiki.leagueoflegends.com</li>
+            <li>Fandom: vignette3.wikia.nocookie.net</li>
+            <li>Pinterest: i.pinimg.com</li>
+            <li>Imgur: i.imgur.com</li>
+            <li>Alpha Coders: images3.alphacoders.com</li>
+            <li>ArtStation: cdnb.artstation.com</li>
+          </ul>
+          <h4>Outbound links</h4>
+          <p>Links to Blitz.gg, Snapchat, TikTok and Instagram take you to other services with their own privacy and cookie policies. You leave this site when you click them.</p>
+          <h4>"Copy my intro" button</h4>
+          <p>It only copies a text to your own clipboard. Nothing is sent anywhere.</p>
+          <h4>Your rights</h4>
+          <p>Under the GDPR (Articles 15 to 21) you may request access, rectification, erasure, restriction, portability, or object to the processing of your personal data. Write to <a href="mailto:ayoub07aissaoui@gmail.com">ayoub07aissaoui@gmail.com</a>. As the site itself holds no personal data, requests about server logs may have to be addressed to the host. You may also lodge a complaint with the CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>).</p>
+        </section>
+
+        <section data-legal-section="credits">
+          <h3>Disclaimer &amp; credits</h3>
+          <h4>Riot Games</h4>
+          <p class="quote">This site isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
+          <p>League of Legends, its champions (such as Yone and Yasuo), item icons and artwork are the property of Riot Games, Inc. They appear here in an unofficial, non-commercial fan project.</p>
+          <h4>Attack on Titan</h4>
+          <p>Attack on Titan, Eren Yeager and related works and characters belong to their respective creators and rights holders. The Eren page is an unofficial fan page expressing personal opinions; no affiliation is claimed.</p>
+          <h4>Third-party artwork</h4>
+          <p>Some backgrounds and illustrations come from third-party sources (Pinterest, Imgur, Alpha Coders, ArtStation) and remain the property of their authors. No ownership is claimed. If you are the author or a rights holder and want a credit added or the image removed, write to <a href="mailto:ayoub07aissaoui@gmail.com">ayoub07aissaoui@gmail.com</a> with the page URL and proof of ownership, and it will be handled promptly.</p>
+          <h4>Brands and logos</h4>
+          <p>Snapchat, TikTok, Instagram and Blitz are trademarks of their respective owners. This site is not affiliated with or endorsed by them; the links only point to the publisher's own profiles. Social icons come from Simple Icons (CC0 1.0); the brand logos themselves remain their owners' trademarks.</p>
+          <h4>Statistics</h4>
+          <p>Ranked figures are taken from profile screenshots at different moments. They are informative only and not real-time or official data.</p>
+        </section>
+        <p class="legal__stamp">Last updated: 20 September 2026.</p>
+      </div>
+
+      <div data-legal-lang="fr" lang="fr" hidden>
+        <section data-legal-section="notice">
+          <h3>Mentions légales</h3>
+          <h4>Éditeur</h4>
+          <p>Ce site est un projet personnel et non commercial édité par <strong>Ayoub</strong>, personne physique. Conformément à l'article 6, III, 2 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN), l'éditeur a choisi de rester anonyme auprès du public et a communiqué ses éléments d'identification à l'hébergeur ci-dessous.</p>
+          <p><strong>Directeur de la publication :</strong> Ayoub. <strong>Contact :</strong> <a href="mailto:ayoub07aissaoui@gmail.com">ayoub07aissaoui@gmail.com</a></p>
+          <p><strong>Adresse du site :</strong> <a href="https://ayoub-yone.github.io/" target="_blank" rel="noopener noreferrer">https://ayoub-yone.github.io/</a></p>
+          <h4>Hébergeur</h4>
+          <p>Le site est hébergé sur <strong>GitHub Pages</strong> par <strong>GitHub, Inc.</strong> (société du groupe Microsoft) — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis — <a href="https://support.github.com" target="_blank" rel="noopener noreferrer">support.github.com</a> (GitHub ne publie pas de numéro de téléphone pour l&#39;hébergement : le contact se fait en ligne). Politique de confidentialité de GitHub : <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">docs.github.com</a>.</p>
+          <h4>Usage non commercial</h4>
+          <p>Ce site ne contient aucune publicité, ne vend rien, n'a ni sponsor ni lien d'affiliation, et ne génère aucun revenu.</p>
+          <h4>Contenu et responsabilité</h4>
+          <p>Le contenu est fourni à titre informatif et de divertissement, « en l'état ». Les statistiques classées proviennent de captures d'écran de profil et peuvent être dépassées ; ce ne sont pas des données officielles. L'éditeur s'efforce de maintenir le site exact sans pouvoir le garantir, et n'est pas responsable du contenu des sites externes vers lesquels il renvoie (Blitz, Snapchat, TikTok, Instagram).</p>
+          <h4>Propriété intellectuelle</h4>
+          <p>Les textes originaux, la mise en page et le code de ce site sont l'œuvre de l'éditeur et ne peuvent être copiés sans autorisation, au-delà de ce que la loi permet. Les contenus tiers (éléments de jeu, illustrations, logos) restent la propriété de leurs détenteurs : voir « Avertissement et crédits ».</p>
+          <h4>Droit applicable</h4>
+          <p>Ce site est soumis au droit français.</p>
+        </section>
+
+        <section data-legal-section="privacy">
+          <h3>Confidentialité et cookies</h3>
+          <p class="quote"><strong>En bref :</strong> ce site ne dépose aucun cookie, n'utilise aucun outil d'analyse, de publicité ou de suivi, n'a ni formulaire ni compte, et ne collecte lui-même aucune donnée personnelle.</p>
+          <h4>Cookies et traceurs</h4>
+          <p>Le site ne stocke rien sur ton appareil : ni cookie, ni stockage local, ni empreinte numérique. Il ne charge aucun script, cadre ou widget tiers. Aucun traceur non essentiel n'étant utilisé, aucune bannière de consentement n'est requise (article 82 de la loi Informatique et Libertés, règles ePrivacy).</p>
+          <h4>Données techniques traitées par l'hébergeur</h4>
+          <p>Comme tout site, lors d'une visite, ton navigateur transmet aux serveurs de GitHub (GitHub Pages) ton adresse IP, le type de navigateur, la date et l'heure et la page demandée. Ces journaux sont conservés par l'hébergeur pour la sécurité et le fonctionnement (intérêt légitime, article 6.1.f du RGPD), selon ses propres règles de conservation et sa politique de confidentialité.</p>
+          <h4>Images de tiers</h4>
+          <p>Pour afficher les illustrations, icônes d'objets et arrière-plans, ton navigateur charge des images directement depuis les serveurs tiers ci-dessous, qui reçoivent donc ton adresse IP et des informations sur ton navigateur (éventuellement hors de l'UE, par exemple aux États-Unis). L'éditeur ne reçoit pas ces données. Leurs politiques de confidentialité s'appliquent.</p>
+          <ul>
+            <li>Riot Games : ddragon.leagueoflegends.com, cmsassets.rgpub.io</li>
+            <li>League of Legends Wiki (Weird Gloop) : wiki.leagueoflegends.com</li>
+            <li>Fandom : vignette3.wikia.nocookie.net</li>
+            <li>Pinterest : i.pinimg.com</li>
+            <li>Imgur : i.imgur.com</li>
+            <li>Alpha Coders : images3.alphacoders.com</li>
+            <li>ArtStation : cdnb.artstation.com</li>
+          </ul>
+          <h4>Liens sortants</h4>
+          <p>Les liens vers Blitz.gg, Snapchat, TikTok et Instagram t'emmènent vers d'autres services, avec leurs propres politiques de confidentialité et de cookies. Tu quittes ce site en cliquant dessus.</p>
+          <h4>Bouton « Copy my intro »</h4>
+          <p>Il copie uniquement un texte dans ton presse-papiers. Rien n'est envoyé.</p>
+          <h4>Tes droits</h4>
+          <p>Selon le RGPD (articles 15 à 21), tu peux demander l'accès, la rectification, l'effacement, la limitation, la portabilité de tes données personnelles ou t'opposer à leur traitement. Écris à <a href="mailto:ayoub07aissaoui@gmail.com">ayoub07aissaoui@gmail.com</a>. Le site ne détenant lui-même aucune donnée personnelle, les demandes concernant les journaux serveur peuvent devoir être adressées à l'hébergeur. Tu peux aussi introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>).</p>
+        </section>
+
+        <section data-legal-section="credits">
+          <h3>Avertissement et crédits</h3>
+          <h4>Riot Games</h4>
+          <p class="quote">This site isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
+          <p>Ce site n'est pas approuvé par Riot Games et ne reflète pas les opinions de Riot Games ni de toute personne impliquée officiellement dans la production ou la gestion de ses propriétés. League of Legends, ses champions (comme Yone et Yasuo), les icônes d'objets et les illustrations sont la propriété de Riot Games, Inc. Ils apparaissent ici dans un projet de fan non officiel et non commercial.</p>
+          <h4>L'Attaque des Titans</h4>
+          <p>L'Attaque des Titans (Attack on Titan), Eren Jäger (Eren Yeager) et les œuvres et personnages associés appartiennent à leurs créateurs et ayants droit respectifs. La page Eren est une page de fan non officielle exprimant des opinions personnelles ; aucune affiliation n'est revendiquée.</p>
+          <h4>Illustrations de tiers</h4>
+          <p>Certains arrière-plans et illustrations proviennent de sources tierces (Pinterest, Imgur, Alpha Coders, ArtStation) et restent la propriété de leurs auteurs. Aucune propriété n'est revendiquée. Si tu es l'auteur ou un ayant droit et souhaites un crédit ou le retrait d'une image, écris à <a href="mailto:ayoub07aissaoui@gmail.com">ayoub07aissaoui@gmail.com</a> avec l'URL de la page et un justificatif de propriété : la demande sera traitée rapidement.</p>
+          <h4>Marques et logos</h4>
+          <p>Snapchat, TikTok, Instagram et Blitz sont des marques de leurs propriétaires respectifs. Ce site n'est ni affilié ni approuvé par eux ; les liens pointent uniquement vers les profils de l'éditeur. Les icônes de réseaux sociaux viennent de Simple Icons (CC0 1.0) ; les logos de marque restent la propriété de leurs détenteurs.</p>
+          <h4>Statistiques</h4>
+          <p>Les chiffres classés proviennent de captures d'écran de profil à différents moments. Ils sont indicatifs et ne constituent pas des données officielles ni en temps réel.</p>
+        </section>
+        <p class="legal__stamp">Dernière mise à jour : 20 septembre 2026.</p>
+      </div>
+
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var dlg = document.getElementById("legal");
+  if (!dlg) return;
+  var body = dlg.querySelector(".legal__body");
+  var lastFocus = null;
+  var lang = /^fr/i.test(navigator.language || "") ? "fr" : "en";
+
+  var NAV = {
+    en: { title: "Legal information", notice: "Legal notice", privacy: "Privacy & cookies", credits: "Disclaimer & credits", close: "Close" },
+    fr: { title: "Informations légales", notice: "Mentions légales", privacy: "Confidentialité et cookies", credits: "Avertissement et crédits", close: "Fermer" }
+  };
+
+  function setLang(l) {
+    lang = l;
+    dlg.setAttribute("data-lang", l);
+    dlg.querySelectorAll("[data-legal-lang]").forEach(function (n) { n.hidden = n.getAttribute("data-legal-lang") !== l; });
+    dlg.querySelectorAll("[data-legal-setlang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-legal-setlang") === l)); });
+    dlg.querySelector("#legal-title").textContent = NAV[l].title;
+    dlg.querySelectorAll(".legal__nav [data-legal-open]").forEach(function (b) { b.textContent = NAV[l][b.getAttribute("data-legal-open")]; });
+    dlg.querySelector("[data-legal-close]").setAttribute("aria-label", NAV[l].close);
+  }
+
+  function scrollToSection(name) {
+    var sec = body.querySelector('[data-legal-lang]:not([hidden]) [data-legal-section="' + name + '"]');
+    body.scrollTop = sec ? sec.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - 4 : 0;
+  }
+
+  function openLegal(name) {
+    if (!dlg.open) {
+      lastFocus = document.activeElement;
+      setLang(lang);
+      if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+      document.documentElement.classList.add("legal-open");
+    }
+    scrollToSection(name || "notice");
+  }
+
+  function closeLegal() {
+    if (typeof dlg.close === "function") dlg.close();
+    else {
+      dlg.removeAttribute("open");
+      onClosed();
+    }
+  }
+
+  function onClosed() {
+    document.documentElement.classList.remove("legal-open");
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (!t.closest) return;
+    var o = t.closest("[data-legal-open]");
+    if (o) { openLegal(o.getAttribute("data-legal-open")); return; }
+    var s = t.closest("[data-legal-setlang]");
+    if (s) { setLang(s.getAttribute("data-legal-setlang")); body.scrollTop = 0; return; }
+    if (t.closest("[data-legal-close]") || t === dlg) closeLegal();
+  });
+  dlg.addEventListener("close", onClosed);
+})();
 </script>
 </body>
 </html>

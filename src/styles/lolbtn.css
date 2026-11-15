@@ -1,0 +1,79 @@
+/* Signature button — hextech "Find match" frame with a cyan auroral pulse.
+   Every animated layer moves via transform/opacity only (compositor-safe):
+   the legacy drop-shadow pulse is now a pre-blurred halo layer whose opacity/scale breathe. */
+.lolbtn {
+  --ct: 15px;
+  --cb: 11px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 clamp(34px, 5vw, 54px);
+  color: #f6fdff;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 25, 30, .85), 0 0 14px rgba(110, 240, 235, .4);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .3s var(--ease);
+}
+.lolbtn:hover { transform: translateY(-2px) scale(1.01); }
+.lolbtn:active { transform: translateY(0) scale(.995); transition-duration: .12s; }
+.lolbtn:focus-visible { outline-offset: 5px; }
+
+/* Glow: radial gradients only, no filter. Two stacked halos so the "hot" state can cross-fade. */
+.lolbtn__halo { position: absolute; inset: -22px -26px; z-index: -2; pointer-events: none; will-change: transform, opacity; }
+.lolbtn__halo::before, .lolbtn__halo::after { content: ""; position: absolute; inset: 0; border-radius: 40%; }
+.lolbtn__halo::before { background: radial-gradient(closest-side, rgba(63, 234, 224, .42), rgba(40, 170, 215, .18) 55%, transparent); animation: lolGlow 4.2s ease-in-out infinite; }
+.lolbtn__halo::after { background: radial-gradient(closest-side, rgba(130, 255, 248, .62), rgba(90, 210, 245, .32) 50%, transparent); opacity: 0; transition: opacity .45s var(--ease); }
+.lolbtn:hover .lolbtn__halo::after { opacity: 1; animation: lolGlowHot 1.5s ease-in-out infinite; }
+@keyframes lolGlow { 0%, 100% { opacity: .65; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.04); } }
+@keyframes lolGlowHot { 0%, 100% { opacity: .8; transform: scale(.98); } 50% { opacity: 1; transform: scale(1.1); } }
+
+.lolbtn__l { position: absolute; z-index: -1; clip-path: polygon(var(--ct) 0, calc(100% - var(--ct)) 0, 100% var(--ct), 100% calc(100% - var(--cb)), calc(100% - var(--cb)) 100%, var(--cb) 100%, 0 calc(100% - var(--cb)), 0 var(--ct)); }
+.lolbtn__l--edge { inset: 0; background: linear-gradient(180deg, #b9fff6 0%, #48d9d4 42%, #2096a6 100%); }
+.lolbtn__l--gap { inset: 2px; --ct: 14px; --cb: 10px; background: #04252b; }
+.lolbtn__l--line { inset: 4px; --ct: 13px; --cb: 9px; background: linear-gradient(180deg, #3cc7c6, #1a7f8d); }
+.lolbtn__l--core { inset: 5px; --ct: 12px; --cb: 8px; overflow: hidden; background: linear-gradient(180deg, #062f36 0%, #08454c 55%, #0a5a60 100%); }
+.lolbtn__sheen { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(160, 255, 245, .17), transparent 40%), radial-gradient(60% 95% at 0% 100%, rgba(70, 232, 222, .36), transparent 70%), radial-gradient(60% 95% at 100% 100%, rgba(70, 232, 222, .36), transparent 70%); }
+
+/* Aurora waves: a 4-tile-wide strip translated by exactly one tile per loop (seamless). */
+.lolbtn__w { position: absolute; top: -50%; bottom: -50%; left: 0; width: 400%; background-repeat: repeat-x; background-size: 25% 100%; mix-blend-mode: color-dodge; pointer-events: none; will-change: transform; transition: opacity .45s var(--ease); }
+.lolbtn__w--a { opacity: .4; background-image: linear-gradient(115deg, transparent 20%, rgba(120, 255, 245, .4) 40%, rgba(255, 255, 255, .7) 50%, rgba(120, 255, 245, .4) 60%, transparent 80%); animation: lolWave 4.5s linear infinite; }
+.lolbtn__w--b { opacity: .3; background-image: linear-gradient(115deg, transparent 15%, rgba(60, 210, 230, .3) 35%, rgba(200, 255, 250, .5) 50%, rgba(60, 210, 230, .3) 65%, transparent 85%); animation: lolWaveRev 6.5s linear infinite; }
+.lolbtn__w--c { opacity: .22; background-image: linear-gradient(115deg, transparent 25%, rgba(90, 200, 235, .35) 40%, rgba(170, 250, 255, .55) 50%, rgba(90, 200, 235, .35) 60%, transparent 75%); animation: lolWave 8.5s linear infinite; }
+@keyframes lolWave { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-25%, 0, 0); } }
+@keyframes lolWaveRev { from { transform: translate3d(-25%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+
+/* Diagonal glint: a narrow rotated band crossing the core */
+.lolbtn__diag { position: absolute; top: -120%; bottom: -120%; left: 0; width: 34%; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(220, 255, 252, .8) 50%, transparent); opacity: .6; transform: translate3d(-160%, 0, 0) rotate(38deg); will-change: transform; animation: lolDiag 3.2s linear infinite; transition: opacity .4s var(--ease); }
+@keyframes lolDiag { from { transform: translate3d(-160%, 0, 0) rotate(38deg); } to { transform: translate3d(420%, 0, 0) rotate(38deg); } }
+
+/* Hover heat: an additive light layer instead of brightness() filters */
+.lolbtn__hot { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(180, 255, 250, .28), rgba(70, 232, 222, .16) 60%, rgba(70, 232, 222, .3)); mix-blend-mode: screen; opacity: 0; transition: opacity .4s var(--ease); }
+.lolbtn:hover .lolbtn__hot { opacity: 1; }
+.lolbtn:hover .lolbtn__w--a { opacity: .9; animation-duration: 1.8s; }
+.lolbtn:hover .lolbtn__w--b { opacity: .7; animation-duration: 2.6s; }
+.lolbtn:hover .lolbtn__w--c { opacity: .55; animation-duration: 3.4s; }
+.lolbtn:hover .lolbtn__diag { opacity: 1; animation-duration: 1s; }
+
+/* Text glow on hover: duplicate glyph layer fades in (no text-shadow transition) */
+.lolbtn__t { position: relative; }
+.lolbtn__t::after { content: attr(data-text) / ""; position: absolute; inset: 0; color: transparent; text-shadow: 0 0 10px rgba(160, 255, 248, .85), 0 0 26px rgba(95, 234, 224, .55); opacity: 0; transition: opacity .4s var(--ease); pointer-events: none; }
+.lolbtn:hover .lolbtn__t::after { opacity: 1; }
+
+/* ---------- Global reduced motion (legacy parity: lolbtn waves + birds keep a gentle drift) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0s !important; }
+  .lolbtn__halo::before, .lolbtn:hover .lolbtn__halo::after { animation: none !important; }
+  .lolbtn__diag { animation: none !important; opacity: .35; }
+  .lolbtn__w--c { animation: none !important; }
+  .lolbtn__w--a, .lolbtn:hover .lolbtn__w--a { animation: lolWave 9s linear infinite !important; }
+  .lolbtn__w--b, .lolbtn:hover .lolbtn__w--b { animation: lolWaveRev 13s linear infinite !important; }
+}

@@ -1,0 +1,48 @@
+/* Eren page birds: scroll flight, idle cage-lock, release. Compositor-safe port (opacity/transform only). */
+/* ---------- Birds ---------- */
+.birds { position: fixed; inset: 0; z-index: -1; display: none; overflow: hidden; pointer-events: none; }
+html[data-page-active="eren"] .birds { display: block; }
+.bird { position: absolute; left: 0; top: 0; will-change: transform; }
+.bird__flip { transition: transform .5s var(--ease), opacity .9s var(--ease); }
+.bird.is-back .bird__flip { transform: scaleX(-1); }
+.bird__svg { display: block; width: 100%; height: auto; overflow: visible; fill: #fff; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .6)) drop-shadow(0 0 5px rgba(255, 255, 255, .4)); animation: birdBob var(--bob, 4.4s) ease-in-out infinite; }
+.bird__wing { transform-origin: 37px 29.5px; animation: birdFlap var(--flap, .9s) ease-in-out infinite; }
+.bird__wing--far { opacity: .55; animation-delay: calc(var(--flap, .9s) * -.14); }
+.bird__cage { position: absolute; left: 50%; top: 50%; width: 175%; height: auto; overflow: visible; fill: none; stroke: #e8d6a6; stroke-width: 1.5px; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: translate(-50%, -58%) scale(.92); transition: opacity .5s var(--ease), transform .7s var(--ease); pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .6)); }
+.bird__cage * { vector-effect: non-scaling-stroke; }
+.birds.is-idle .bird__cage { opacity: .95; transform: translate(-50%, -46%) scale(1); }
+.birds.is-idle .bird__wing, .birds.is-idle .bird__svg { animation-play-state: paused !important; }
+/* Cage-locking: bars appear one by one (opacity + scale), the padlock drops and locks, the bird dims */
+.bird__cage > :is(path, circle) { opacity: 0; transform: scaleY(.6); transform-box: fill-box; transform-origin: top center; transition: opacity .45s var(--ease) var(--d, 0s), transform .55s var(--ease) var(--d, 0s); }
+.birds.is-idle .bird__cage > :is(path, circle) { opacity: 1; transform: none; }
+.bird__cage .cage-lock { opacity: 0; transform: translateY(-30px); transform-box: fill-box; transform-origin: center; transition: transform .5s cubic-bezier(.34, 1.56, .64, 1) 1.05s, opacity .25s linear 1.05s; }
+.birds.is-idle .bird__cage .cage-lock { opacity: 1; transform: translateY(0); animation: lockClick .4s var(--ease) 1.75s; }
+.bird__cage .cage-lock__shackle { opacity: 0; transition: opacity .4s var(--ease) 1.15s; }
+.birds.is-idle .bird__cage .cage-lock__shackle { opacity: 1; }
+.bird__cage .cage-lock rect { fill: #12161b; stroke: #e8d6a6; stroke-width: 1.6px; }
+.bird__cage .cage-lock__hole { fill: #e8d6a6; stroke: none; }
+.birds.is-idle .bird__flip { opacity: .55; }
+/* Release (click on a bird or end of page): the cage bursts, the bird flies off bright */
+.birds .bird.is-hover .bird__flip { transform: scale(1.12); }
+.birds .bird.is-hover.is-back .bird__flip { transform: scaleX(-1.12) scaleY(1.12); }
+.birds .bird.is-free .bird__flip { opacity: 1; transform: scaleX(var(--face, 1)) rotate(var(--tilt, 0deg)); transition: transform .45s var(--ease), opacity .3s var(--ease); }
+.birds .bird.is-free .bird__wing, .birds .bird.is-free .bird__svg { animation-play-state: running !important; }
+.birds .bird.is-free .bird__cage { opacity: 0; transform: translate(-50%, -46%) scale(1.28) rotate(7deg); transition: opacity .3s linear, transform .5s var(--ease); }
+.birds .bird.is-free .bird__cage .cage-lock { opacity: 0; transform: translateY(16px) rotate(18deg); animation: none; transition: opacity .2s linear, transform .4s cubic-bezier(.55, 0, .85, .55); }
+@keyframes lockClick { 0%, 100% { transform: translateY(0) scale(1); } 35% { transform: translateY(1.2px) scale(1.1, .9); } 70% { transform: translateY(-.8px) scale(.95, 1.05); } }
+/* Feathers drifting in the background */
+.feather { position: absolute; top: 0; left: var(--x, 50vw); width: 14px; height: auto; opacity: 0; animation: featherFall var(--dur, 16s) linear var(--delay, 0s) infinite; filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .45)); }
+@keyframes featherFall {
+  0% { transform: translate3d(0, -10vh, 0) rotate(-10deg); opacity: 0; }
+  6% { opacity: var(--op, .35); }
+  50% { transform: translate3d(calc(var(--sway, 60px) * -.5), 52vh, 0) rotate(75deg); }
+  86% { opacity: var(--op, .35); }
+  100% { transform: translate3d(var(--sway, 60px), 112vh, 0) rotate(165deg); opacity: 0; }
+}
+@keyframes birdFlap { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(-.85); } }
+@keyframes birdBob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+@media (prefers-reduced-motion: reduce) {
+  .bird__svg { animation: birdBob var(--bob, 4.4s) ease-in-out infinite !important; }
+  .bird__wing { animation: birdFlap var(--flap, .9s) ease-in-out infinite !important; }
+  .bird__wing--far { animation-delay: calc(var(--flap, .9s) * -.14) !important; }
+}
